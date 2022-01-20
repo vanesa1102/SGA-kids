@@ -33,7 +33,7 @@ var score = 0;
 var gameOver = false;
 var scoreText;
 
-var instructions = ['walk_right', 'walk_down', 'walk_left', 'walk_up']
+var instructions = []
 
 var game = new Phaser.Game(config);
 
@@ -56,88 +56,49 @@ function create() {
     // Animation set
     this.anims.create({
         key: 'stop',
-        frames: this.anims.generateFrameNumbers('boy', { frames: [ 1 ] }),
+        frames: this.anims.generateFrameNumbers('boy', { frames: [1] }),
         frameRate: 50,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_down',
-        frames: this.anims.generateFrameNumbers('boy', { frames: [ 0, 1, 2 ] }),
+        frames: this.anims.generateFrameNumbers('boy', { frames: [0, 1, 2] }),
         frameRate: 8,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_right',
-        frames: this.anims.generateFrameNumbers('boy', { frames: [ 3, 4, 5 ] }),
+        frames: this.anims.generateFrameNumbers('boy', { frames: [3, 4, 5] }),
         frameRate: 8,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_left',
-        frames: this.anims.generateFrameNumbers('boy', { frames: [ 6, 7, 8 ] }),
+        frames: this.anims.generateFrameNumbers('boy', { frames: [6, 7, 8] }),
         frameRate: 8,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_up',
-        frames: this.anims.generateFrameNumbers('boy', { frames: [ 9, 10, 11 ] }),
+        frames: this.anims.generateFrameNumbers('boy', { frames: [9, 10, 11] }),
         frameRate: 8,
         repeat: -1
     });
 
-    boy = this.physics.add.sprite(32,32).setScale(2);
+    boy = this.physics.add.sprite(32, 32).setScale(2);
 
 
     //  boy physics properties. Give the little guy a slight bounce.
     boy.setBounce(0.2);
     boy.setCollideWorldBounds(true);
-
-    this.input.on('pointerdown', function () {
-        boy.setVelocity(0,0);
-        boy.anims.play('stop', true);
-        var interval = setInterval(f, 2000)
-        function f() {
-            const i = instructions.shift()
-            console.log(i)
-            switch (i) {
-                case 'walk_left':
-                    boy.setVelocity(-80, 0);
-                    boy.anims.play('walk_left', true);    
-                    break;
-                case 'walk_right':
-                    boy.setVelocity(80, 0);
-                    boy.anims.play('walk_right', true);    
-                    break;
-                case 'walk_up':
-                    boy.setVelocity(0, -80);
-                    boy.anims.play('walk_up', true);    
-                    break;
-                case 'walk_down':
-                    boy.setVelocity(0, 80);
-                    boy.anims.play('walk_down', true);    
-                    break;
-                case 'stop':
-                    boy.setVelocity(0,0);
-                    boy.anims.play('stop', true);    
-                    break;
-                    
-                default:
-                    boy.setVelocity(0,0);
-                    boy.anims.play('stop', true);
-                    clearInterval(interval);
-                    break;
-            }            
-        }
-    });
-
-
+    
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
 }
 
 function update() {
 
-    
+
 
     // if (gameOver) {
     //     return;
@@ -159,4 +120,49 @@ function update() {
     //     boy.setVelocity(0);
     //     boy.anims.play('stop', true);
     // }
+}
+
+
+function agregar(walk) {
+    instructions.push(walk)
+    console.log(instructions)
+}
+
+function caminar() {
+
+    boy.setVelocity(0, 0);
+    boy.anims.play('stop', true);
+    var interval = setInterval(f, 2000)
+    function f() {
+        const i = instructions.shift()
+        console.log(i)
+        switch (i) {
+            case 'walk_left':
+                boy.setVelocity(-80, 0);
+                boy.anims.play('walk_left', true);
+                break;
+            case 'walk_right':
+                boy.setVelocity(80, 0);
+                boy.anims.play('walk_right', true);
+                break;
+            case 'walk_up':
+                boy.setVelocity(0, -80);
+                boy.anims.play('walk_up', true);
+                break;
+            case 'walk_down':
+                boy.setVelocity(0, 80);
+                boy.anims.play('walk_down', true);
+                break;
+            case 'stop':
+                boy.setVelocity(0, 0);
+                boy.anims.play('stop', true);
+                break;
+
+            default:
+                boy.setVelocity(0, 0);
+                boy.anims.play('stop', true);
+                clearInterval(interval);
+                break;
+        }
+    }
 }
