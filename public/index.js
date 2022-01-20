@@ -45,9 +45,18 @@ function preload() {
     this.load.image('car', 'assets/car90.png');
     this.load.spritesheet('boy', 'assets/boy.png', { frameWidth: 32, frameHeight: 32 });
     this.load.tilemapCSV('map', 'assets/grid2.csv');
+    this.load.audio('theme', [
+        'assets/music.mp3'
+    ]);
+
 }
 
 function create() {
+    var music = this.sound.add('theme');
+
+    music.play();
+
+
     //  A simple background for our game
     this.add.image(400, 400, 'bg');
     map = this.make.tilemap({ key: 'map', tileWidth: 160, tileHeight: 160 });
