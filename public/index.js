@@ -24,7 +24,7 @@ var config = {
     }
 };
 
-var player;
+var boy;
 var stars;
 var bombs;
 var platforms;
@@ -33,6 +33,8 @@ var score = 0;
 var gameOver = false;
 var scoreText;
 
+var instructions = []
+
 var game = new Phaser.Game(config);
 
 function preload() {
@@ -40,7 +42,7 @@ function preload() {
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
-    this.load.spritesheet('dude', 'assets/niña.png', { frameWidth: 94.6125, frameHeight: 80 });
+    this.load.spritesheet('boy', 'assets/boy.png', { frameWidth: 32, frameHeight: 32 });
 }
 
 function create() {
@@ -50,76 +52,117 @@ function create() {
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
 
-    //  Here we create the ground.
-    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
-    //  Now let's create some ledges
-    platforms.create(600, 400, 'ground');
-    platforms.create(50, 250, 'ground');
-    platforms.create(750, 220, 'ground');
-
-    // The player and its settings
-    player = this.physics.add.sprite(100, 450, 'dude');
-
-    //  Player physics properties. Give the little guy a slight bounce.
-    player.setBounce(0.2);
-    player.setCollideWorldBounds(true);
-
-    //  Our player animations, turning, walking left and walking right.
+    // Animation set
     this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 7 }),
-        frameRate: 10,
+        key: 'stop',
+        frames: this.anims.generateFrameNumbers('boy', { frames: [1] }),
+        frameRate: 50,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'walk_down',
+        frames: this.anims.generateFrameNumbers('boy', { frames: [0, 1, 2] }),
+        frameRate: 8,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'walk_right',
+        frames: this.anims.generateFrameNumbers('boy', { frames: [3, 4, 5] }),
+        frameRate: 8,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'walk_left',
+        frames: this.anims.generateFrameNumbers('boy', { frames: [6, 7, 8] }),
+        frameRate: 8,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'walk_up',
+        frames: this.anims.generateFrameNumbers('boy', { frames: [9, 10, 11] }),
+        frameRate: 8,
         repeat: -1
     });
 
-    this.anims.create({
-        key: 'turn',
-        frames: [{ key: 'dude', frame: 8 }],
-        frameRate: 20
-    });
+    boy = this.physics.add.sprite(32, 32).setScale(2);
 
-    this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', { start: 9, end: 15 }),
-        frameRate: 10,
-        repeat: -1
-    });
 
+    //  boy physics properties. Give the little guy a slight bounce.
+    boy.setBounce(0.2);
+    boy.setCollideWorldBounds(true);
+    
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
 }
 
 function update() {
 
-    player.setVelocity(0);
 
-    if (gameOver) {
-        return;
-    }
 
-    if (cursors.left.isDown) {
-        player.setVelocityX(-160);
+    // if (gameOver) {
+    //     return;
+    // }
 
-        player.anims.play('left', true);
-    }
-    else if (cursors.right.isDown) {
-        player.setVelocityX(160);
+    // if (cursors.left.isDown) {
+    //     boy.setVelocity(-80,0);
+    //     boy.anims.play('walk_left', true);
+    // }else if (cursors.right.isDown) {
+    //     boy.setVelocity(80,0);
+    //     boy.anims.play('walk_right', true);
+    // }else if (cursors.up.isDown) {
+    //     boy.setVelocity(0,-80);
+    //     boy.anims.play('walk_up', true);
+    // }else if (cursors.down.isDown) {
+    //     boy.setVelocity(0,80);
+    //     boy.anims.play('walk_down', true);
+    // }else{
+    //     boy.setVelocity(0);
+    //     boy.anims.play('stop', true);
+    // }
+}
 
-        player.anims.play('right', true);
-    }
-    else {
-        player.setVelocityX(0);
 
-        player.anims.play('turn');
-    }
+function agregar(walk) {
+    instructions.push(walk)
+    console.log(instructions)
+}
 
-    if (cursors.up.isDown) {
-        player.setVelocityY(-160);
-    }
+function caminar() {
 
-    if (cursors.down.isDown) {
-        player.setVelocityY(160);
+    boy.setVelocity(0, 0);
+    boy.anims.play('stop', true);
+    var interval = setInterval(f, 2000)
+    function f() {
+        const i = instructions.shift()
+        console.log(i)
+        switch (i) {
+            case 'walk_left':
+                boy.setVelocity(-80, 0);
+                boy.anims.play('walk_left', true);
+                break;
+            case 'walk_right':
+                boy.setVelocity(80, 0);
+                boy.anims.play('walk_right', true);
+                break;
+            case 'walk_up':
+                boy.setVelocity(0, -80);
+                boy.anims.play('walk_up', true);
+                break;
+            case 'walk_down':
+                boy.setVelocity(0, 80);
+                boy.anims.play('walk_down', true);
+                break;
+            case 'stop':
+                boy.setVelocity(0, 0);
+                boy.anims.play('stop', true);
+                break;
+
+            default:
+                boy.setVelocity(0, 0);
+                boy.anims.play('stop', true);
+                clearInterval(interval);
+                break;
+        }
     }
 }
