@@ -31,14 +31,10 @@ var config = {
 };
 
 var boy;
-var platforms;
-var cursors;
 var score = 0;
 var gameOver = false;
 var scoreText;
 var map, tileset, layer, tile;
-
-
 var instructions = []
 
 var game = new Phaser.Game(config);
@@ -46,6 +42,7 @@ var game = new Phaser.Game(config);
 function preload() {
     this.load.image('bg', 'assets/bg.png');
     this.load.image('tiles', 'assets/objects.png');
+    this.load.image('car', 'assets/car90.png');
     this.load.spritesheet('boy', 'assets/boy.png', { frameWidth: 32, frameHeight: 32 });
     this.load.tilemapCSV('map', 'assets/grid2.csv');
 }
@@ -57,7 +54,6 @@ function create() {
     tileset = map.addTilesetImage('tiles', null, 160, 160, 0, 0);
     layer = map.createLayer(0, tileset, 0, 0);
 
-    // Animation set
     this.anims.create({
         key: 'stop',
         frames: this.anims.generateFrameNumbers('boy', { frames: [1] }),
@@ -89,84 +85,82 @@ function create() {
         repeat: -1
     });
 
-    boy = this.physics.add.sprite(80, 80).setScale(2);
-    boy.anims.play('stop', true);
+    var xpos, ypos;
 
-    //  boy physics properties. Give the little guy a slight bounce.
-    boy.setBounce(0.2);
+    do {
+        xpos = 80 + 160 * Math.floor(Math.random() * 5);
+        ypos = 80 + 160 * Math.floor(Math.random() * 5);
+    } while (layer.getTileAtWorldXY(xpos, ypos, true).index > 0);
+
+    boy = this.physics.add.sprite(xpos, ypos).setScale(2);
+    boy.anims.play('stop', true);
     boy.setCollideWorldBounds(true);
 
-    //  Input Events
-    cursors = this.input.keyboard.createCursorKeys();
+    do {
+        xpos = 80 + 160 * Math.floor(Math.random() * 5);
+        ypos = 80 + 160 * Math.floor(Math.random() * 5);
+    } while (layer.getTileAtWorldXY(xpos, ypos, true).index > 0 && (boy.x != xpos || boy.y != ypos));
+
+    this.add.image(xpos, ypos, 'car').setScale(2);
 }
 
 function update() {
 }
 
-
 function agregar(walk) {
     instructions.push(walk)
-    console.log(instructions)
 }
 
 function caminar() {
 
-    //boy.setVelocity(0, 0);
+    control_btns = document.getElementsByClassName("control-btn");
+    for (let i = 0; i < control_btns.length; i++) {
+        control_btns[i].disabled = true;
+    }
+
+    f()
 
     var interval = setInterval(f, 2000)
+
     function f() {
         const i = instructions.shift()
         switch (i) {
             case 'walk_left':
                 tile = layer.getTileAtWorldXY(boy.x - 160, boy.y, true);
-                if (tile.index === 1 || tile.index === 2 || tile.index === 3 || tile.index === 4) {
-                    //  Blocked, we can't move
-                    console.log('Bloqueo')
-                }
-                else {
+                boy.setVelocity(0, 0);
+                if (tile.index == 0) {
                     boy.setVelocity(-80, 0);
-                    boy.anims.play('walk_left', true);
                 }
-
-
+                boy.anims.play('walk_left', true);
                 break;
+
             case 'walk_right':
                 tile = layer.getTileAtWorldXY(boy.x + 160, boy.y, true);
-                if (tile.index === 1 || tile.index === 2 || tile.index === 3 || tile.index === 4) {
-                    //  Blocked, we can't move
-                    console.log('Bloqueo')
-                }
-                else {
+                boy.setVelocity(0, 0);
+                if (tile.index == 0) {
                     boy.setVelocity(80, 0);
-                    boy.anims.play('walk_right', true);
                 }
-
+                boy.anims.play('walk_right', true);
                 break;
+
             case 'walk_up':
                 tile = layer.getTileAtWorldXY(boy.x, boy.y - 160, true);
-                if (tile.index === 1 || tile.index === 2 || tile.index === 3 || tile.index === 4) {
-                    //  Blocked, we can't move
-                    console.log('Bloqueo')
-                }
-                else {
+                boy.setVelocity(0, 0);
+                if (tile.index == 0) {
                     boy.setVelocity(0, -80);
-                    boy.anims.play('walk_up', true);
                 }
-
-
+                boy.anims.play('walk_up', true);
                 break;
+
             case 'walk_down':
                 tile = layer.getTileAtWorldXY(boy.x, boy.y + 160, true);
-                if (tile.index === 1 || tile.index === 2 || tile.index === 3 || tile.index === 4) {
-                    //  Blocked, we can't move
-                    console.log('Bloqueo')
-                }
-                else {
+                boy.setVelocity(0, 0);
+                if (tile.index == 0) {
                     boy.setVelocity(0, 80);
-                    boy.anims.play('walk_down', true);
                 }
-
+                boy.anims.play('walk_down', true);
                 break;
+
             case 'stop':
                 boy.setVelocity(0, 0);
                 boy.anims.play('stop', true);
@@ -176,6 +170,11 @@ function caminar() {
                 boy.setVelocity(0, 0);
                 boy.anims.play('stop', true);
                 clearInterval(interval);
+
+                for (let i = 0; i < control_btns.length; i++) {
+                    control_btns[i].disabled = false;
+                }
+            
                 break;
         }
     }
