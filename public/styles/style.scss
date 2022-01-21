@@ -1,0 +1,82 @@
+body{
+    background: #ffffff url("../assets/images/fondo.png") no-repeat center center/cover;
+}
+
+.btn {
+    &.btn-up {
+        height: 80px;
+        width: 80px;
+        background: #ffffff url("../assets/images/walk_up.png") no-repeat center center/cover;
+    }
+
+    &.btn-left {
+        height: 80px;
+        width: 80px;
+        background: #ffffff url("../assets/images/walk_left.png") no-repeat center center/cover;
+    }
+
+    &.btn-right {
+        height: 80px;
+        width: 80px;
+        background: #ffffff url("../assets/images/walk_right.png") no-repeat center center/cover;
+    }
+
+    &.btn-down {
+        height: 80px;
+        width: 80px;
+        background: #ffffff url("../assets/images/walk_down.png") no-repeat center center/cover;
+    }
+
+    &.btn-go {
+        height: 80px;
+        width: 80px;
+        background: #ffffff url("../assets/images/go.png") no-repeat center center/cover;
+    }
+
+    &.btn-delete {
+        height: 80px;
+        width: 80px;
+        background: #ffffff url("../assets/images/trash.png") no-repeat center center/cover;
+    }
+
+    &.btn-arrow {
+        height: 80px;
+        width: 80px;
+        background: #ffffff url("../assets/images/arrow.png") no-repeat center center/cover;
+    }
+
+    &.btn-sound {
+        height: 80px;
+        width: 80px;
+        background: #ffffff url("../assets/images/sound.png") no-repeat center center/cover;
+        animation-name: bounceIn;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+    }
+
+    &:focus {
+        box-shadow: 0;
+    }
+}
+
+@keyframes bounceIn {
+    50% {
+        opacity: 0.9;
+        transform: scale(1.1);
+    }
+    80% {
+        opacity: 1;
+        transform: scale(0.89);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translate3d(0, 0, 0);
+    }
+}
+
+#arrow-container{
+    img{
+        width: 60px;
+        height: 60px;
+    }
+}
