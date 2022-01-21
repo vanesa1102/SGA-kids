@@ -30,6 +30,7 @@ var config = {
     }
 };
 
+var music;
 var boy, tigrillo;
 var score = 0;
 var gameOver = false;
@@ -53,7 +54,7 @@ function preload() {
 }
 
 function create() {
-    var music = this.sound.add('theme');
+    music = this.sound.add('theme');
 
     music.play();
 
@@ -192,12 +193,32 @@ function caminar() {
 }
 
 function reproducirAudio(audioId) {
-    $('audio').each(function () {
-        this.pause(); // Stop playing
-        this.currentTime = 0; // Reset time
-    });
-    $("#" + audioId)[0].play();
+    if ($("#" + audioId)[0].paused) {
+        music.pause()
+        $('audio').each(function () {
+            this.pause(); // Stop playing
+            this.currentTime = 0; // Reset time
+        });
+        $("#" + audioId)[0].play();
+        $("#instructions-sound-btn").removeClass('btn-sound')
+        $("#instructions-sound-btn").addClass('btn-no-sound')
+    }else{
+        music.resume()
+        $("#" + audioId)[0].pause();
+        $("#instructions-sound-btn").removeClass('btn-no-sound')
+        $("#instructions-sound-btn").addClass('btn-sound')
+    }
+    
 }
+
+$('.modal').on('shown.bs.modal', function(){
+    music.pause();
+});
+
+$('.modal').on('hidden.bs.modal', function(){
+    music.resume();
+});
+
 
 function start() {
     boy.anims.play('stop', true);

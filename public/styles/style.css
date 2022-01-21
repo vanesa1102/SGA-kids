@@ -45,6 +45,14 @@ body {
   animation-duration: 4s;
   animation-iteration-count: infinite;
 }
+.btn.btn-no-sound {
+  height: 80px;
+  width: 80px;
+  background: #ffffff url("../assets/images/no-sound.png") no-repeat center center/cover;
+  animation-name: bounceIn;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
 .btn:focus {
   box-shadow: 0;
 }
