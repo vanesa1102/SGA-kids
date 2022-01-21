@@ -30,14 +30,14 @@ var config = {
     }
 };
 
-var boy;
+var boy, tigrillo;
 var score = 0;
 var gameOver = false;
 var scoreText;
 var map, tileset, layer, tile;
 var instructions = [];
 var xpos, ypos;
-var n = 1; //Para saber el # de pregunta
+var n = 0; //Para saber el # de pregunta
 
 var game = new Phaser.Game(config);
 
@@ -48,7 +48,7 @@ function preload() {
     this.load.spritesheet('boy', 'assets/images/boy.png', { frameWidth: 32, frameHeight: 32 });
     this.load.tilemapCSV('map', 'assets/images/grid.csv');
     this.load.audio('theme', [
-        'assets/music.mp3'
+        'assets/audios/music.mp3'
     ]);
 }
 
@@ -100,7 +100,7 @@ function create() {
         ypos = 80 + 160 * Math.floor(Math.random() * 5);
     } while (layer.getTileAtWorldXY(xpos, ypos, true).index > 0);
 
-    boy = this.physics.add.sprite(xpos, ypos).setScale(2);
+    boy = this.physics.add.sprite(xpos, ypos, 'boy').setScale(2);
     boy.anims.play('stop', true);
     boy.setCollideWorldBounds(true);
 
@@ -116,20 +116,16 @@ function update() {
 }
 
 function agregar(walk) {
+    $('.btn-go').prop('disabled', false);
     $("#arrow-container").append("<img class='img-fluid' src='assets/images/" + walk + "2.png'>");
     instructions.push(walk)
 }
 
 function caminar() {
     $("#arrow-container").empty();
-
-    control_btns = document.getElementsByClassName("control-btn");
-    for (let i = 0; i < control_btns.length; i++) {
-        control_btns[i].disabled = true;
-    }
+    $('.control-btn').prop('disabled', true)
 
     f()
-
     var interval = setInterval(f, 2000)
 
     function f() {
@@ -138,7 +134,7 @@ function caminar() {
             case 'walk_left':
                 tile = layer.getTileAtWorldXY(boy.x - 160, boy.y, true);
                 boy.setVelocity(0, 0);
-                if (tile.index == 0) {
+                if (tile != null && tile.index == 0) {
                     boy.setVelocity(-80, 0);
                 }
                 boy.anims.play('walk_left', true);
@@ -147,7 +143,7 @@ function caminar() {
             case 'walk_right':
                 tile = layer.getTileAtWorldXY(boy.x + 160, boy.y, true);
                 boy.setVelocity(0, 0);
-                if (tile.index == 0) {
+                if (tile != null && tile.index == 0) {
                     boy.setVelocity(80, 0);
                 }
                 boy.anims.play('walk_right', true);
@@ -156,7 +152,7 @@ function caminar() {
             case 'walk_up':
                 tile = layer.getTileAtWorldXY(boy.x, boy.y - 160, true);
                 boy.setVelocity(0, 0);
-                if (tile.index == 0) {
+                if (tile != null && tile.index == 0) {
                     boy.setVelocity(0, -80);
                 }
                 boy.anims.play('walk_up', true);
@@ -165,7 +161,7 @@ function caminar() {
             case 'walk_down':
                 tile = layer.getTileAtWorldXY(boy.x, boy.y + 160, true);
                 boy.setVelocity(0, 0);
-                if (tile.index == 0) {
+                if (tile != null && tile.index == 0) {
                     boy.setVelocity(0, 80);
                 }
                 boy.anims.play('walk_down', true);
@@ -181,11 +177,10 @@ function caminar() {
                 boy.anims.play('stop', true);
                 clearInterval(interval);
 
-                for (let i = 0; i < control_btns.length; i++) {
-                    control_btns[i].disabled = false;
-                }
+                $('.control-btn').prop('disabled', false)
+                $('.btn-go').prop('disabled', true);
 
-                if (Math.abs(xpos - boy.x) > 38 && Math.abs(xpos - boy.x) < 42) {
+                if (Math.abs(tigrillo.x - boy.x) < 80 && Math.abs(tigrillo.y - boy.y) < 80) {
                     openModal(true);
                 } else {
                     openModal(false);
@@ -205,15 +200,7 @@ function reproducirAudio(audioId) {
 }
 
 function start() {
-    do {
-        xpos = 120 + 160 * Math.floor(Math.random() * 5);
-        ypos = 80 + 160 * Math.floor(Math.random() * 5);
-    } while (layer.getTileAtWorldXY(xpos, ypos, true).index > 0);
-
-    boy.x = xpos;
-    boy.y = ypos;
     boy.anims.play('stop', true);
-    boy.setCollideWorldBounds(true);
 
     do {
         xpos = 80 + 160 * Math.floor(Math.random() * 5);
@@ -225,70 +212,108 @@ function start() {
 }
 
 
-
-
 // --------- MODAL --------------
+const btn_types = [
+    "btn-primary",
+    "btn-secondary",
+    "btn-success",
+    "btn-danger",
+    "btn-warning",
+    "btn-info",
+    "btn-light",
+    "btn-dark"
+]
 
-var textos = [
+var preguntas = [
     {
-        title: "El tigrillo sigue lejos",
-        body:
-            `<div class="row justify-content-center align-items-center">
-                <div class="row col-lg-6 mt-2 text-center justify-content-center">
-                    Acercate para descubrir nuevas cosas.
-                    <button class="btn btn-lg d-flex btn-download-s5" data-dismiss="modal" aria-label="Close">Continuar</button>
-                </div>
-            </div>
-            `
+        titulo: "1 + 2",
+        pregunta: "¿Cuanto es 1 + 2?",
+        respuesta: "3",
+        audio: "assets/audios/preguntas/nombre_del_audio.mp3",
+        imagen: "assets/images/preguntas/nombre_de_la_imagen.png",
+        opciones: [
+            "1",
+            "4",
+            "3",
+            "Ns/Nr"
+        ]
     },
     {
-        title: "Pregunta 1",
-        body:
-            `<div class="row justify-content-center align-items-center">
-                <div class="row col-lg-6 mt-2 text-center justify-content-center">
-                    Pregunta 1 info.
-                    <button type="button" class="btn btn-sound" onclick="reproducirAudio('instrucciones')"></button>
-                    <audio id="instrucciones" src="assets/audios/instrucciones.mp3"></audio>
-                    <button class="btn btn-lg btn-dark d-flex" data-dismiss="modal" aria-label="Close" onclick="respuesta(1)">Opcion 1</button>
-                    <button class="btn btn-lg btn-info d-flex" data-dismiss="modal" aria-label="Close" onclick="respuesta(2)">Opción 2</button>
-                </div>
-            </div>
-            `,
-        answer: 1
+        titulo: "2 + 2",
+        pregunta: "¿Cuanto es 2 + 2?",
+        respuesta: "4",
+        audio: "assets/audios/preguntas/nombre_del_audio.mp3",
+        imagen: "assets/images/preguntas/nombre_de_la_imagen.png",
+        opciones: [
+            "1",
+            "4",
+            "5"
+        ]
     },
     {
-        title: "Pregunta 2",
-        body:
-            `<div class="row justify-content-center align-items-center">
-                <div class="row col-lg-6 mt-2 text-center justify-content-center">
-                    Pregunta 2 info.
-                    <button class="btn btn-lg btn-dark d-flex" data-dismiss="modal" aria-label="Close" onclick="respuesta(1)">Opcion 1</button>
-                    <button class="btn btn-lg btn-info d-flex" data-dismiss="modal" aria-label="Close" onclick="respuesta(2)">Opción 2</button>
-                </div>
-            </div>
-            `,
-        answer: 2
-    },
-    
+        titulo: "Mejor juego",
+        pregunta: "¿Es este el mejor juego?",
+        respuesta: "Si",
+        audio: "assets/audios/preguntas/nombre_del_audio.mp3",
+        imagen: "assets/images/preguntas/nombre_de_la_imagen.png",
+        opciones: [
+            "Si",
+            "No",
+            "Tal vez"
+        ]
+    }
+]
 
-];
+function toHtml({pregunta, opciones, respuesta}) {
+    return `<div class="row justify-content-center align-items-center">
+        <div class="col col-lg-6 mt-2 text-center justify-content-center">
+            <p>${pregunta}</p>
+            ${opciones.map((x, i) => 
+                `<button 
+                    class="btn btn-lg ${btn_types[i]} d-flex" 
+                    data-dismiss="modal" 
+                    aria-label="Close" 
+                    onclick="respuesta('${x}', '${respuesta}')"
+                >
+                    ${x}
+                </button>`
+            ).reduce((prev, curr) => prev + curr)}
+         </div>
+    </div>`
+}
 
 function openModal(success) {
     if (success) {
-        //Llenar aquí el modal con una pregunta aleatoria que no se haya hecho
-        $("#myModal .modal-title").html(textos[n].title);
-        $("#myModal .modal-body").html(textos[n].body);
+        $("#modal-pregunta .modal-title").html(preguntas[n].titulo);
+        $("#modal-pregunta .modal-body").html(toHtml(preguntas[n]));
+        $('#modal-pregunta').modal('show')
     } else {
-        $("#myModal .modal-title").html(textos[0].title);
-        $("#myModal .modal-body").html(textos[0].body);
+        $('#modal-error').modal('show')
+    }
+    n++;
+    $('#turnos').html(preguntas.length - n)
+    if (n >= preguntas.length) {
+        gameOver = true
+        n = 0
+        score = 0
+        $('#turnos').html(preguntas.length - n)
+        $('#game-over').prop('hidden', false)
     }
 
-    $('#myModal').modal()
 };
 
 //Puntuación
-function respuesta(ans){
-    console.log("Pregunta: "+n+" - Respuesta: "+ans+" - Respuesta correcta: "+ textos[n].answer);
-    n++;
+function respuesta(respuesta, respuesta_correcta){
+    if (respuesta === respuesta_correcta) {
+        score++
+        $('#puntuacion').html(score)
+    }
 }
 
+//Randomizar las preguntas
+function shuffleQuestions() {
+    preguntas.sort(() => Math.random() - 0.5).forEach(pregunta => {
+        pregunta.opciones.sort(() => Math.random() - 0.5)
+    })
+}
+shuffleQuestions()
