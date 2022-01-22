@@ -1,5 +1,10 @@
 body {
   background: #ffffff url("../assets/images/fondo.png") no-repeat center center/cover;
+  font-family: monospace;
+}
+
+.contenedor-principal {
+  font-family: monospace;
 }
 
 .btn.btn-up {
@@ -32,22 +37,37 @@ body {
   width: 80px;
   background: #ffffff url("../assets/images/trash.png") no-repeat center center/cover;
 }
+.btn.btn-restart {
+  height: 80px;
+  width: 80px;
+  background: #ffffff url("../assets/images/restart.png") no-repeat center center/cover;
+}
+.btn.btn-mute {
+  height: 80px;
+  width: 80px;
+  background: #ffffff url("../assets/images/mute.png") no-repeat center center/cover;
+}
+.btn.btn-nomute {
+  height: 80px;
+  width: 80px;
+  background: #ffffff url("../assets/images/nomute.png") no-repeat center center/cover;
+}
 .btn.btn-arrow {
   height: 80px;
   width: 80px;
   background: #ffffff url("../assets/images/arrow.png") no-repeat center center/cover;
 }
 .btn.btn-sound {
-  height: 80px;
-  width: 80px;
+  height: 60px;
+  width: 60px;
   background: #ffffff url("../assets/images/sound.png") no-repeat center center/cover;
   animation-name: bounceIn;
   animation-duration: 4s;
   animation-iteration-count: infinite;
 }
 .btn.btn-no-sound {
-  height: 80px;
-  width: 80px;
+  height: 60px;
+  width: 60px;
   background: #ffffff url("../assets/images/no-sound.png") no-repeat center center/cover;
   animation-name: bounceIn;
   animation-duration: 4s;
@@ -55,6 +75,37 @@ body {
 }
 .btn:focus {
   box-shadow: 0;
+}
+
+.modal {
+  font-family: monospace;
+}
+.modal .bg-blue {
+  background-color: #2674b8;
+  color: white;
+}
+.modal .bg-green {
+  background-color: #7db320;
+  color: white;
+  border: 0;
+}
+.modal .bg-orange {
+  background-color: #ef8908;
+  color: white;
+}
+.modal .tigrillo-error {
+  max-width: 80%;
+}
+.modal .tigrillo-tuto {
+  max-width: 60%;
+}
+
+#puntuacion .estrella {
+  width: 40px;
+}
+
+#score .estrella {
+  width: 30px;
 }
 
 @keyframes bounceIn {
@@ -72,8 +123,15 @@ body {
   }
 }
 #arrow-container img {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
+}
+
+@media (min-width: 992px) {
+  .bottom0 {
+    bottom: 0;
+    position: absolute !important;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
