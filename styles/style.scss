@@ -1,5 +1,14 @@
-body{
+$blue: #2674b8;
+$green: #7db320;
+$orange: #ef8908;
+
+body {
     background: #ffffff url("../assets/images/fondo.png") no-repeat center center/cover;
+    font-family: monospace;
+}
+
+.contenedor-principal {
+    font-family: monospace;
 }
 
 .btn {
@@ -39,6 +48,24 @@ body{
         background: #ffffff url("../assets/images/trash.png") no-repeat center center/cover;
     }
 
+    &.btn-restart {
+        height: 80px;
+        width: 80px;
+        background: #ffffff url("../assets/images/restart.png") no-repeat center center/cover;
+    }
+
+    &.btn-mute {
+        height: 80px;
+        width: 80px;
+        background: #ffffff url("../assets/images/mute.png") no-repeat center center/cover;
+    }
+    
+    &.btn-nomute {
+        height: 80px;
+        width: 80px;
+        background: #ffffff url("../assets/images/nomute.png") no-repeat center center/cover;
+    }
+
     &.btn-arrow {
         height: 80px;
         width: 80px;
@@ -46,9 +73,18 @@ body{
     }
 
     &.btn-sound {
-        height: 80px;
-        width: 80px;
+        height: 60px;
+        width: 60px;
         background: #ffffff url("../assets/images/sound.png") no-repeat center center/cover;
+        animation-name: bounceIn;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+    }
+
+    &.btn-no-sound {
+        height: 60px;
+        width: 60px;
+        background: #ffffff url("../assets/images/no-sound.png") no-repeat center center/cover;
         animation-name: bounceIn;
         animation-duration: 4s;
         animation-iteration-count: infinite;
@@ -56,6 +92,47 @@ body{
 
     &:focus {
         box-shadow: 0;
+    }
+}
+
+.modal {
+    font-family: monospace;
+    .bg-blue {
+        background-color: $blue;
+        color: white;
+    }
+
+    .bg-green {
+        background-color: $green;
+        color: white;
+        border: 0;
+    }
+
+    .bg-orange {
+        background-color: $orange;
+        color: white;
+    }
+
+    .tigrillo-error {
+        max-width: 80%;
+    }
+
+    .tigrillo-tuto {
+        max-width: 60%;
+    }
+}
+
+#puntuacion{
+    .estrella{
+        width: 40px;
+    }
+}
+
+#score{
+    .estrella{
+            width: 30px;
+        
+        
     }
 }
 
@@ -74,9 +151,16 @@ body{
     }
 }
 
-#arrow-container{
-    img{
-        width: 60px;
-        height: 60px;
+#arrow-container {
+    img {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (min-width: 768px) {
+    .bottom0 {
+        bottom: 0;
+        position: absolute !important;
     }
 }

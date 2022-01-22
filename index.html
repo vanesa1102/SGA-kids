@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>SGA kids</title>
+
+  <link id="stylesheet" rel="stylesheet" href="styles/style.css">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo.png">
+  
+  
+
+  <!-- Phaser -->
+  <script src="//cdn.jsdelivr.net/npm/phaser@3.51.0/dist/phaser.js"></script>
+
+  <!-- Bootstrap 4.3.1 CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row contenedor-principal">
+      <div class="col-12 col-md-3" id='instruction-container'>
+        <div class="row d-flex justify-content-center">
+          <div class="d-flex justify-content-center col-9 ">
+            <img class="img-fluid p-4 m-0 mr-3 ml-3" src="assets/images/logo3.png">
+          </div>
+          <div class="d-flex justify-content-center col-12">
+            <div class="mt-5">
+              <button class="btn btn-dark" data-toggle="modal" data-target="#modal-tuto">
+                ¿Cómo jugar?
+              </button>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center col-12 bottom0">
+            <div class="m-0">
+              <img class="img-fluid m-0" src="assets/images/tigrillo3.png">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 p-0 " id='game-container'>
+
+      </div>
+      <div class="col-12 col-md-3 p-0 ">
+        <div class="row m-5 d-flex justify-content-center">
+          Turnos restantes: <span id="turnos">0</span>
+        </div>
+        <div class="row m-5 d-flex justify-content-center" id="puntuacion">
+        </div>
+        <div class="row m-5 d-flex justify-content-center" id='arrow-container'></div>
+        <div class="row d-flex justify-content-center m-0 bottom0">
+          <div class="d-flex justify-content-center col-12">
+            <button type="button" class="control-btn btn btn-restart" onclick="restart()"></button>
+            <button type="button" class="control-btn btn btn-up" onclick="agregar('walk_up')"></button>
+            <button type="button" class="control-btn btn btn-mute" onclick="audioPrincipal()" id="mute"></button>
+          </div>
+          <div class="d-flex justify-content-center col-12">
+            <button type="button" class="control-btn btn btn-left" onclick="agregar('walk_left')"></button>
+            <button type="button" class="control-btn btn btn-go" onclick="caminar()" disabled></button>
+            <button type="button" class="control-btn btn btn-right" onclick="agregar('walk_right')"></button>
+          </div>
+          <div class="d-flex justify-content-center col-12">
+            <button type="button" class="control-btn btn btn-delete" onclick="" disabled></button>
+            <button type="button" class="control-btn btn btn-down" onclick="agregar('walk_down')"></button>
+            <button type="button" class="control-btn btn btn-arrow" onclick="" disabled></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" id="modal-pregunta">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-orange d-flex justify-content-center">
+            <h3 class="modal-title"></h3>
+          </div>
+          <div class="modal-body m-2">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" id="modal-error">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-orange d-flex justify-content-center">
+            <h4 class="modal-title">El tigrillo sigue lejos</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row justify-content-center align-items-center">
+              <div class="row col-12 col-sm-4 d-flex text-center justify-content-center">
+                <img class="img-fluid m-0 tigrillo-error" src="assets/images/tigrillo-azul.png">
+              </div>
+
+              <div class="row col-12 col-sm-8 d-flex text-center justify-content-center">
+                <div class="col-10">
+                  <h5>Acércate para descubrir nuevas cosas.</h5>
+                </div>
+                <div class="col-8 d-flex justify-content-center mt-4">
+                  <button class="btn btn-info btn-lg d-flex bg-blue" data-dismiss="modal"
+                    aria-label="Close" onclick="respuesta(0,1)">Continuar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" id="modal-tuto">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-blue d-flex justify-content-center">
+            <h2 class="modal-title">¡ Bienvenido !</h2>
+          </div>
+          <div class="modal-body">
+            <div class="row justify-content-center align-items-center">
+              <div class="row col-12 col-sm-4 d-flex text-center justify-content-center">
+                <button id="instructions-sound-btn" type="button" class="btn btn-sound"
+                  onclick="reproducirAudio('instrucciones')"></button>
+                <audio id="instrucciones" src="assets/audios/instrucciones.mp3"></audio>
+                <img class="img-fluid m-0 tigrillo-tuto" src="assets/images/tigrillo4.png">
+              </div>
+
+              <div class="row col-12 col-sm-8 d-flex text-center justify-content-center">
+                <div class="col-10">
+                  <h5>Utiliza las flechas para moverte y aprende junto a nuestro amigo el tigrillo.</h5>
+                </div>
+                <div class="col-8 d-flex justify-content-center mt-4">
+                  <button class="btn btn-info btn-lg d-flex bg-green" data-dismiss="modal"
+                    aria-label="Close" onclick="pauseAudio('instrucciones')">Continuar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" id="modal-end">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-blue d-flex justify-content-center">
+            <h2 class="modal-title">El juego ha terminado</h2>
+          </div>
+          <div class="modal-body">
+            <div class="row justify-content-center align-items-center">
+              <div class="row col-12 col-sm-4 d-flex text-center justify-content-center">
+                <button id="instructions-sound-btn" type="button" class="btn btn-sound"
+                  onclick="reproducirAudio('instrucciones')"></button>
+                <audio id="instrucciones" src="assets/audios/instrucciones.mp3"></audio>
+                <img class="img-fluid m-0 tigrillo-tuto" src="assets/images/tigrillo4.png">
+              </div>
+
+              <div class="row col-12 col-sm-8 d-flex text-center justify-content-center">
+                <div class="col-10">
+                  <h5>Tu puntuación: </h5>
+                  <div id="score"></div>
+                </div>
+                <div class="col-10">
+                  <h5>Puedes seguir jugando y aprender más cosas sobre el medio ambiente y cómo cuidarlo</h5>
+                </div>
+                <div class="col-8 d-flex justify-content-center mt-4">
+                  <button class="btn btn-info btn-lg d-flex bg-green" data-dismiss="modal"
+                    aria-label="Close" onclick="restart()">Continuar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap  -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <!-- Phaser -->
+  <script src="index.js" type="text/javascript"></script>
+
+</body>
+
+</html>

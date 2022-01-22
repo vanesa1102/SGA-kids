@@ -32,6 +32,7 @@ var config = {
 
 var music;
 var boy, tigrillo;
+var boyTile, tigrilloTile;
 var score = 0;
 var gameOver = false;
 var scoreText;
@@ -111,6 +112,8 @@ function create() {
     } while (layer.getTileAtWorldXY(xpos, ypos, true).index > 0 || (boy.x == xpos + 40 || boy.y == ypos));
 
     tigrillo = this.add.tileSprite(xpos, ypos, 160, 160, 'tigrillo');
+
+    $('#turnos').html(preguntas.length - n)
 }
 
 function update() {
@@ -180,8 +183,12 @@ function caminar() {
 
                 $('.control-btn').prop('disabled', false)
                 $('.btn-go').prop('disabled', true);
+                $('.btn-delete').prop('disabled', true);
+                $('.btn-arrow').prop('disabled', true);
 
-                if (Math.abs(tigrillo.x - boy.x) < 80 && Math.abs(tigrillo.y - boy.y) < 80) {
+                boyTile = layer.getTileAtWorldXY(boy.x, boy.y, true)
+                tigrilloTile = layer.getTileAtWorldXY(tigrillo.x, tigrillo.y, true)
+                if (boyTile == tigrilloTile) {
                     openModal(true);
                 } else {
                     openModal(false);
@@ -202,20 +209,42 @@ function reproducirAudio(audioId) {
         $("#" + audioId)[0].play();
         $("#instructions-sound-btn").removeClass('btn-sound')
         $("#instructions-sound-btn").addClass('btn-no-sound')
-    }else{
+    } else {
         music.resume()
         $("#" + audioId)[0].pause();
         $("#instructions-sound-btn").removeClass('btn-no-sound')
         $("#instructions-sound-btn").addClass('btn-sound')
     }
-    
+
 }
 
-$('.modal').on('shown.bs.modal', function(){
+function pauseAudio(audioId) {
+    $("#" + audioId)[0].pause();
+    $("#instructions-sound-btn").removeClass('btn-no-sound')
+    $("#instructions-sound-btn").addClass('btn-sound')
+}
+
+function audioPrincipal() {
+    if (music.isPlaying) {
+        $("#mute").removeClass('btn-mute')
+        $("#mute").addClass('btn-nomute')
+        music.pause()
+    } else {
+        $("#mute").addClass('btn-mute')
+        $("#mute").removeClass('btn-nomute')
+        music.resume()
+    }
+}
+
+$('.modal').on('shown.bs.modal', function () {
+    $("#mute").removeClass('btn-mute')
+    $("#mute").addClass('btn-nomute')
     music.pause();
 });
 
-$('.modal').on('hidden.bs.modal', function(){
+$('.modal').on('hidden.bs.modal', function () {
+    $("#mute").addClass('btn-mute')
+    $("#mute").removeClass('btn-nomute')
     music.resume();
 });
 
@@ -223,10 +252,12 @@ $('.modal').on('hidden.bs.modal', function(){
 function start() {
     boy.anims.play('stop', true);
 
+    boyTile = layer.getTileAtWorldXY(boy.x, boy.y, true)
+
     do {
         xpos = 80 + 160 * Math.floor(Math.random() * 5);
         ypos = 80 + 160 * Math.floor(Math.random() * 5);
-    } while (layer.getTileAtWorldXY(xpos, ypos, true).index > 0 || (boy.x == xpos + 40 || boy.y == ypos));
+    } while (layer.getTileAtWorldXY(xpos, ypos, true).index > 0 || boyTile == layer.getTileAtWorldXY(xpos, ypos, true));
 
     tigrillo.x = xpos;
     tigrillo.y = ypos;
@@ -248,9 +279,10 @@ const btn_types = [
 var preguntas = [
     {
         titulo: "1 + 2",
+        info: "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In hac habitasse platea dictumst. Nam tortor diam, posuere a molestie nec, maximus eu dui. Mauris luctus congue dui ac pellentesque. Fusce bibendum ultrices elit, eget porta lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce pellentesque nibh ut ipsum finibus, sed cursus nibh maximus.",
         pregunta: "¿Cuanto es 1 + 2?",
         respuesta: "3",
-        audio: "assets/audios/preguntas/nombre_del_audio.mp3",
+        audio: "assets/audios/preguntas/instrucciones.mp3",
         imagen: "assets/images/preguntas/nombre_de_la_imagen.png",
         opciones: [
             "1",
@@ -261,9 +293,10 @@ var preguntas = [
     },
     {
         titulo: "2 + 2",
+        info: "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In hac habitasse platea dictumst. Nam tortor diam, posuere a molestie nec, maximus eu dui. Mauris luctus congue dui ac pellentesque. Fusce bibendum ultrices elit, eget porta lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce pellentesque nibh ut ipsum finibus, sed cursus nibh maximus.",
         pregunta: "¿Cuanto es 2 + 2?",
         respuesta: "4",
-        audio: "assets/audios/preguntas/nombre_del_audio.mp3",
+        audio: "assets/audios/preguntas/instrucciones.mp3",
         imagen: "assets/images/preguntas/nombre_de_la_imagen.png",
         opciones: [
             "1",
@@ -273,9 +306,10 @@ var preguntas = [
     },
     {
         titulo: "Mejor juego",
+        info: "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In hac habitasse platea dictumst. Nam tortor diam, posuere a molestie nec, maximus eu dui. Mauris luctus congue dui ac pellentesque. Fusce bibendum ultrices elit, eget porta lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce pellentesque nibh ut ipsum finibus, sed cursus nibh maximus.",
         pregunta: "¿Es este el mejor juego?",
         respuesta: "Si",
-        audio: "assets/audios/preguntas/nombre_del_audio.mp3",
+        audio: "assets/audios/preguntas/instrucciones.mp3",
         imagen: "assets/images/preguntas/nombre_de_la_imagen.png",
         opciones: [
             "Si",
@@ -285,22 +319,33 @@ var preguntas = [
     }
 ]
 
-function toHtml({pregunta, opciones, respuesta}) {
+function toHtml({ pregunta, opciones, respuesta, audio, imagen, info }) {
     return `<div class="row justify-content-center align-items-center">
-        <div class="col col-lg-6 mt-2 text-center justify-content-center">
-            <p>${pregunta}</p>
-            ${opciones.map((x, i) => 
-                `<button 
-                    class="btn btn-lg ${btn_types[i]} d-flex" 
-                    data-dismiss="modal" 
-                    aria-label="Close" 
-                    onclick="respuesta('${x}', '${respuesta}')"
-                >
-                    ${x}
-                </button>`
-            ).reduce((prev, curr) => prev + curr)}
-         </div>
-    </div>`
+                <div class="row col-12 d-flex text-justify justify-content-end">
+                    <p>${info}</p>
+                    <button id="instructions-sound-btn" type="button" class="btn btn-sound"
+                        onclick="reproducirAudio('pregunta')"></button>
+                        <audio id="pregunta" src=${audio}></audio>
+                    <img class="img-fluid mt-2 " src="https://picsum.photos/1200/800">
+                </div>
+                <div class="row col-12 d-flex text-justify justify-content-center mt-2">
+                    <div class="col-6 d-flex justify-content-center mt-3">
+                        <h5>${pregunta}</h5>
+                    </div>
+                    <div class="col-6 d-flex justify-content-center">
+                    ${opciones.map((x, i) =>
+        `<button 
+                                    class="btn btn-lg ${btn_types[i]} d-flex m-2" 
+                                    data-dismiss="modal" 
+                                    aria-label="Close" 
+                                    onclick="respuesta('${x}', '${respuesta}')"
+                                >
+                                    ${x}
+                                </button>`
+    ).reduce((prev, curr) => prev + curr)}
+                    </div>
+                </div>
+            </div>`
 }
 
 function openModal(success) {
@@ -313,22 +358,41 @@ function openModal(success) {
     }
     n++;
     $('#turnos').html(preguntas.length - n)
-    if (n >= preguntas.length) {
-        gameOver = true
-        n = 0
-        score = 0
-        $('#turnos').html(preguntas.length - n)
-        $('#game-over').prop('hidden', false)
-    }
 
 };
 
 //Puntuación
-function respuesta(respuesta, respuesta_correcta){
+function respuesta(respuesta, respuesta_correcta) {
     if (respuesta === respuesta_correcta) {
         score++
-        $('#puntuacion').html(score)
+        $('#puntuacion').append("<div class='estrella'><img class='img-fluid' src='assets/images/star.png'></div>")
     }
+
+    if(n==preguntas.length){
+        console.log("SE ACABO")
+        
+        var aux = score;
+        for (var i=0; i<n; i++){
+            if(aux>0){
+                $('#score').append("<img class='img-fluid estrella' class='estrella'src='assets/images/star.png'>")
+            }else{
+                $('#score').append("<img class='img-fluid estrella' src='assets/images/gray.png'>")
+            }
+            aux--;
+        }
+        $('#modal-end').modal('show')
+       
+    }
+    console.log(score, n)
+}
+
+
+function restart(){
+    n = 0
+    score = 0
+    $("#puntuacion").empty();
+    $("#score").empty();
+    $('#turnos').html(preguntas.length - n)
 }
 
 //Randomizar las preguntas
