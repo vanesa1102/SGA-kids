@@ -46,7 +46,7 @@
         </div>
       </div>
       <div class="col-8 col-lg-6 p-0 " id='game-container'>
-
+        <audio id="game-music" src="assets/audios/music.mp3"></audio>
       </div>
       <div class="col-4 col-lg-3 p-0 ">
         <div class="row m-5 d-flex justify-content-center">
@@ -59,7 +59,7 @@
           <div class="d-flex justify-content-center col-12">
             <button type="button" class="control-btn btn btn-restart" onclick="restart()"></button>
             <button type="button" class="control-btn btn btn-up" onclick="agregar('walk_up')"></button>
-            <button type="button" class="control-btn btn btn-mute" onclick="audioPrincipal()" id="mute"></button>
+            <button id="game-music-sound-btn" type="button" class="control-btn btn btn-nomute" onclick="toggleAudio('#game-music')" id="mute"></button>
           </div>
           <div class="d-flex justify-content-center col-12">
             <button type="button" class="control-btn btn btn-left" onclick="agregar('walk_left')"></button>
@@ -67,9 +67,9 @@
             <button type="button" class="control-btn btn btn-right" onclick="agregar('walk_right')"></button>
           </div>
           <div class="d-flex justify-content-center col-12">
-            <button type="button" class="control-btn btn btn-delete" onclick="" disabled></button>
+            <button type="button" class="control-btn btn btn-delete" onclick="borrarInstrucciones()" disabled></button>
             <button type="button" class="control-btn btn btn-down" onclick="agregar('walk_down')"></button>
-            <button type="button" class="control-btn btn btn-arrow" onclick="" disabled></button>
+            <button type="button" class="control-btn btn btn-arrow" onclick="borrarUltimaInstruccion()" disabled></button>
           </div>
         </div>
       </div>
@@ -121,9 +121,9 @@
           <div class="modal-body">
             <div class="row justify-content-center align-items-center">
               <div class="row col-12 col-sm-4 d-flex text-center justify-content-center">
-                <button id="instructions-sound-btn" type="button" class="btn btn-sound"
-                  onclick="reproducirAudio('instrucciones')"></button>
-                <audio id="instrucciones" src="assets/audios/instrucciones.mp3"></audio>
+                <button id="bienvenida-sound-btn" type="button" class="btn btn-sound"
+                  onclick="toggleAudio('#bienvenida')"></button>
+                <audio id="bienvenida" src="assets/audios/instrucciones.mp3"></audio>
                 <img class="img-fluid m-0 tigrillo-tuto" src="assets/images/tigrillo4.png">
               </div>
 
@@ -133,7 +133,7 @@
                 </div>
                 <div class="col-8 d-flex justify-content-center mt-4">
                   <button class="btn btn-info btn-lg d-flex bg-green" data-dismiss="modal"
-                    aria-label="Close" onclick="pauseAudio('instrucciones')">Continuar</button>
+                    aria-label="Close" onclick="pauseAudio('#game-music')">Continuar</button>
                 </div>
               </div>
             </div>
@@ -152,9 +152,9 @@
           <div class="modal-body">
             <div class="row justify-content-center align-items-center">
               <div class="row col-12 col-sm-4 d-flex text-center justify-content-center">
-                <button id="instructions-sound-btn" type="button" class="btn btn-sound"
-                  onclick="reproducirAudio('instrucciones')"></button>
-                <audio id="instrucciones" src="assets/audios/instrucciones.mp3"></audio>
+                <button id="gameover-sound-btn" type="button" class="btn btn-sound"
+                  onclick="toggleAudio('#gameover')"></button>
+                <audio id="gameover" src="assets/audios/instrucciones.mp3"></audio>
                 <img class="img-fluid m-0 tigrillo-tuto" src="assets/images/tigrillo4.png">
               </div>
 
