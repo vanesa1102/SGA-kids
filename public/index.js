@@ -75,24 +75,28 @@ function create() {
         key: 'walk_down',
         frames: this.anims.generateFrameNumbers('boy', { frames: [0, 1, 2] }),
         frameRate: 8,
+        yoyo: true,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_right',
         frames: this.anims.generateFrameNumbers('boy', { frames: [3, 4, 5] }),
         frameRate: 8,
+        yoyo: true,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_left',
         frames: this.anims.generateFrameNumbers('boy', { frames: [6, 7, 8] }),
         frameRate: 8,
+        yoyo: true,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_up',
         frames: this.anims.generateFrameNumbers('boy', { frames: [9, 10, 11] }),
         frameRate: 8,
+        yoyo: true,
         repeat: -1
     });
 
@@ -202,20 +206,20 @@ function reproducirAudio(audioId) {
         $("#" + audioId)[0].play();
         $("#instructions-sound-btn").removeClass('btn-sound')
         $("#instructions-sound-btn").addClass('btn-no-sound')
-    }else{
+    } else {
         music.resume()
         $("#" + audioId)[0].pause();
         $("#instructions-sound-btn").removeClass('btn-no-sound')
         $("#instructions-sound-btn").addClass('btn-sound')
     }
-    
+
 }
 
-$('.modal').on('shown.bs.modal', function(){
+$('.modal').on('shown.bs.modal', function () {
     music.pause();
 });
 
-$('.modal').on('hidden.bs.modal', function(){
+$('.modal').on('hidden.bs.modal', function () {
     music.resume();
 });
 
@@ -285,11 +289,11 @@ var preguntas = [
     }
 ]
 
-function toHtml({pregunta, opciones, respuesta}) {
+function toHtml({ pregunta, opciones, respuesta }) {
     return `<div class="row justify-content-center align-items-center">
         <div class="col col-lg-6 mt-2 text-center justify-content-center">
             <p>${pregunta}</p>
-            ${opciones.map((x, i) => 
+            ${opciones.map((x, i) =>
                 `<button 
                     class="btn btn-lg ${btn_types[i]} d-flex" 
                     data-dismiss="modal" 
@@ -324,7 +328,7 @@ function openModal(success) {
 };
 
 //Puntuación
-function respuesta(respuesta, respuesta_correcta){
+function respuesta(respuesta, respuesta_correcta) {
     if (respuesta === respuesta_correcta) {
         score++
         $('#puntuacion').html(score)
