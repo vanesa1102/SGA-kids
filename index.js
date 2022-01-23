@@ -30,7 +30,7 @@ var config = {
     }
 };
 
-var music;
+var musicWasPaused = false;
 var boy, tigrillo;
 var boyTile, tigrilloTile;
 var score = 0;
@@ -49,16 +49,11 @@ function preload() {
     this.load.image('tigrillo', 'assets/images/tigrillo.png');
     this.load.spritesheet('boy', 'assets/images/boy.png', { frameWidth: 32, frameHeight: 32 });
     this.load.tilemapCSV('map', 'assets/images/grid.csv');
-    this.load.audio('theme', [
-        'assets/audios/music.mp3'
-    ]);
 }
 
 function create() {
-    music = this.sound.add('theme');
 
-    music.play();
-
+    playAudio('#game-music');
 
     //  A simple background for our game
     this.add.image(400, 400, 'bg');
@@ -76,24 +71,28 @@ function create() {
         key: 'walk_down',
         frames: this.anims.generateFrameNumbers('boy', { frames: [0, 1, 2] }),
         frameRate: 8,
+        yoyo: true,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_right',
         frames: this.anims.generateFrameNumbers('boy', { frames: [3, 4, 5] }),
         frameRate: 8,
+        yoyo: true,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_left',
         frames: this.anims.generateFrameNumbers('boy', { frames: [6, 7, 8] }),
         frameRate: 8,
+        yoyo: true,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_up',
         frames: this.anims.generateFrameNumbers('boy', { frames: [9, 10, 11] }),
         frameRate: 8,
+        yoyo: true,
         repeat: -1
     });
 
@@ -121,8 +120,30 @@ function update() {
 
 function agregar(walk) {
     $('.btn-go').prop('disabled', false);
+    $('.btn-delete').prop('disabled', false);
+    $('.btn-arrow').prop('disabled', false);
     $("#arrow-container").append("<img class='img-fluid' src='assets/images/" + walk + "2.png'>");
     instructions.push(walk)
+}
+
+function borrarUltimaInstruccion() {
+    $("#arrow-container img:last").remove();
+    instructions.pop();
+
+    if (instructions.length == 0) {
+        $('.btn-go').prop('disabled', true);
+        $('.btn-delete').prop('disabled', true);
+        $('.btn-arrow').prop('disabled', true);
+    }
+
+}
+
+function borrarInstrucciones() {
+    $("#arrow-container").empty();
+    $('.btn-go').prop('disabled', true);
+    $('.btn-delete').prop('disabled', true);
+    $('.btn-arrow').prop('disabled', true);
+    instructions = [];
 }
 
 function caminar() {
@@ -133,11 +154,11 @@ function caminar() {
     var interval = setInterval(f, 2000)
 
     function f() {
+        boy.setVelocity(0, 0);
         const i = instructions.shift()
         switch (i) {
             case 'walk_left':
                 tile = layer.getTileAtWorldXY(boy.x - 160, boy.y, true);
-                boy.setVelocity(0, 0);
                 if (tile != null && tile.index == 0) {
                     boy.setVelocity(-80, 0);
                 }
@@ -146,7 +167,6 @@ function caminar() {
 
             case 'walk_right':
                 tile = layer.getTileAtWorldXY(boy.x + 160, boy.y, true);
-                boy.setVelocity(0, 0);
                 if (tile != null && tile.index == 0) {
                     boy.setVelocity(80, 0);
                 }
@@ -155,7 +175,6 @@ function caminar() {
 
             case 'walk_up':
                 tile = layer.getTileAtWorldXY(boy.x, boy.y - 160, true);
-                boy.setVelocity(0, 0);
                 if (tile != null && tile.index == 0) {
                     boy.setVelocity(0, -80);
                 }
@@ -164,20 +183,13 @@ function caminar() {
 
             case 'walk_down':
                 tile = layer.getTileAtWorldXY(boy.x, boy.y + 160, true);
-                boy.setVelocity(0, 0);
                 if (tile != null && tile.index == 0) {
                     boy.setVelocity(0, 80);
                 }
                 boy.anims.play('walk_down', true);
                 break;
 
-            case 'stop':
-                boy.setVelocity(0, 0);
-                boy.anims.play('stop', true);
-                break;
-
             default:
-                boy.setVelocity(0, 0);
                 boy.anims.play('stop', true);
                 clearInterval(interval);
 
@@ -188,64 +200,79 @@ function caminar() {
 
                 boyTile = layer.getTileAtWorldXY(boy.x, boy.y, true)
                 tigrilloTile = layer.getTileAtWorldXY(tigrillo.x, tigrillo.y, true)
-                if (boyTile == tigrilloTile) {
-                    openModal(true);
-                } else {
-                    openModal(false);
-                }
+                openModal(boyTile == tigrilloTile);
                 start();
                 break;
         }
     }
 }
 
-function reproducirAudio(audioId) {
-    if ($("#" + audioId)[0].paused) {
-        music.pause()
-        $('audio').each(function () {
-            this.pause(); // Stop playing
-            this.currentTime = 0; // Reset time
-        });
-        $("#" + audioId)[0].play();
-        $("#instructions-sound-btn").removeClass('btn-sound')
-        $("#instructions-sound-btn").addClass('btn-no-sound')
-    } else {
-        music.resume()
-        $("#" + audioId)[0].pause();
-        $("#instructions-sound-btn").removeClass('btn-no-sound')
-        $("#instructions-sound-btn").addClass('btn-sound')
-    }
+function toggleAudio(audioId) {
+    const audio = $(audioId)[0];
+    const btn = $(`${audioId}-sound-btn`);
+    const isPaused = audio.paused;
 
+    const {sound_class, no_sound_class} = getSoundClases(audioId);
+    
+    pauseAllAudios();
+    if (isPaused) {
+        audio.play();
+        btn.removeClass(sound_class)
+        btn.addClass(no_sound_class)
+    } else {
+        btn.removeClass(no_sound_class)
+        btn.addClass(sound_class)
+    }
 }
 
 function pauseAudio(audioId) {
-    $("#" + audioId)[0].pause();
-    $("#instructions-sound-btn").removeClass('btn-no-sound')
-    $("#instructions-sound-btn").addClass('btn-sound')
+    pauseAllAudios();
+    const audio = $(audioId)[0];
+    const btn = $(`${audioId}-sound-btn`);
+
+    const {sound_class, no_sound_class} = getSoundClases(audioId);
+
+    audio.pause();
+    btn.removeClass(no_sound_class);
+    btn.addClass(sound_class);
 }
 
-function audioPrincipal() {
-    if (music.isPlaying) {
-        $("#mute").removeClass('btn-mute')
-        $("#mute").addClass('btn-nomute')
-        music.pause()
-    } else {
-        $("#mute").addClass('btn-mute')
-        $("#mute").removeClass('btn-nomute')
-        music.resume()
+function playAudio(audioId) {
+    pauseAllAudios();
+    const audio = $(audioId)[0];
+    const btn = $(`${audioId}-sound-btn`);
+
+    const {sound_class, no_sound_class} = getSoundClases(audioId);
+    
+    audio.play();
+    btn.removeClass(sound_class);
+    btn.addClass(no_sound_class);
+}
+
+function pauseAllAudios() {
+    $('audio').each(function () {
+        this.pause(); // Stop playing
+        this.currentTime = 0; // Reset time
+    });
+}
+
+function getSoundClases(audioId) {
+    return {
+        sound_class: audioId == "#game-music" ? "btn-nomute" : "btn-sound",
+        no_sound_class: audioId == "#game-music" ? "btn-mute" : "btn-no-sound"
     }
 }
 
 $('.modal').on('shown.bs.modal', function () {
-    $("#mute").removeClass('btn-mute')
-    $("#mute").addClass('btn-nomute')
-    music.pause();
+    const audio = $("#game-music")[0];
+    musicWasPaused = audio.paused;
+    pauseAudio('#game-music');
 });
 
 $('.modal').on('hidden.bs.modal', function () {
-    $("#mute").addClass('btn-mute')
-    $("#mute").removeClass('btn-nomute')
-    music.resume();
+    if (!musicWasPaused) {
+        playAudio("#game-music");
+    }
 });
 
 
@@ -266,12 +293,12 @@ function start() {
 
 // --------- MODAL --------------
 const btn_types = [
-    "btn-primary",
-    "btn-secondary",
     "btn-success",
-    "btn-danger",
     "btn-warning",
+    "btn-primary",
+    "btn-danger",
     "btn-info",
+    "btn-secondary",
     "btn-light",
     "btn-dark"
 ]
@@ -283,7 +310,7 @@ var preguntas = [
         pregunta: "¿Cuanto es 1 + 2?",
         respuesta: "3",
         audio: "assets/audios/preguntas/instrucciones.mp3",
-        imagen: "assets/images/preguntas/nombre_de_la_imagen.png",
+        imagen: "https://picsum.photos/1200/800",
         opciones: [
             "1",
             "4",
@@ -297,7 +324,7 @@ var preguntas = [
         pregunta: "¿Cuanto es 2 + 2?",
         respuesta: "4",
         audio: "assets/audios/preguntas/instrucciones.mp3",
-        imagen: "assets/images/preguntas/nombre_de_la_imagen.png",
+        imagen: "https://picsum.photos/1200/800",
         opciones: [
             "1",
             "4",
@@ -310,7 +337,7 @@ var preguntas = [
         pregunta: "¿Es este el mejor juego?",
         respuesta: "Si",
         audio: "assets/audios/preguntas/instrucciones.mp3",
-        imagen: "assets/images/preguntas/nombre_de_la_imagen.png",
+        imagen: "https://picsum.photos/1200/800",
         opciones: [
             "Si",
             "No",
@@ -323,10 +350,10 @@ function toHtml({ pregunta, opciones, respuesta, audio, imagen, info }) {
     return `<div class="row justify-content-center align-items-center">
                 <div class="row col-12 d-flex text-justify justify-content-end">
                     <p>${info}</p>
-                    <button id="instructions-sound-btn" type="button" class="btn btn-sound"
-                        onclick="reproducirAudio('pregunta')"></button>
+                    <button id="pregunta-sound-btn" type="button" class="btn btn-sound"
+                        onclick="toggleAudio('#pregunta')"></button>
                         <audio id="pregunta" src=${audio}></audio>
-                    <img class="img-fluid mt-2 " src="https://picsum.photos/1200/800">
+                    <img class="img-fluid mt-2 " src="${imagen}">
                 </div>
                 <div class="row col-12 d-flex text-justify justify-content-center mt-2">
                     <div class="col-6 d-flex justify-content-center mt-3">
@@ -368,9 +395,7 @@ function respuesta(respuesta, respuesta_correcta) {
         $('#puntuacion').append("<div class='estrella'><img class='img-fluid' src='assets/images/star.png'></div>")
     }
 
-    if(n==preguntas.length){
-        console.log("SE ACABO")
-        
+    if(n==preguntas.length){        
         var aux = score;
         for (var i=0; i<n; i++){
             if(aux>0){
@@ -383,7 +408,6 @@ function respuesta(respuesta, respuesta_correcta) {
         $('#modal-end').modal('show')
        
     }
-    console.log(score, n)
 }
 
 
@@ -395,7 +419,6 @@ function restart(){
     $('#turnos').html(preguntas.length - n)
 }
 
-//Randomizar las preguntas
 function shuffleQuestions() {
     preguntas.sort(() => Math.random() - 0.5).forEach(pregunta => {
         pregunta.opciones.sort(() => Math.random() - 0.5)
