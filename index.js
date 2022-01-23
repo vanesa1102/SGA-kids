@@ -53,7 +53,7 @@ function preload() {
 
 function create() {
 
-    // playAudio('#game-music');
+    playAudio('#game-music');
 
     //  A simple background for our game
     this.add.image(400, 400, 'bg');
