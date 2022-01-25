@@ -31,7 +31,7 @@ var config = {
 };
 
 var musicWasPaused = false;
-var boy, tigrillo;
+var player, tigrillo;
 var boyTile, tigrilloTile;
 var score = 0;
 var gameOver = false;
@@ -40,8 +40,8 @@ var map, tileset, layer, tile;
 var instructions = [];
 var xpos, ypos;
 var n = 0; //Para saber el # de pregunta
-var personaje = 'boy'
-
+var personajes = ['boy', 'girl', 'ghost'];
+var personaje = 'boy';
 var game = new Phaser.Game(config);
 
 function preload() {
@@ -50,6 +50,7 @@ function preload() {
     this.load.image('tigrillo', 'assets/images/tigrillo.png');
     this.load.spritesheet('boy', 'assets/images/boy.png', { frameWidth: 32, frameHeight: 32 });
     this.load.spritesheet('girl', 'assets/images/girl.png', { frameWidth: 32, frameHeight: 32 });
+    this.load.spritesheet('ghost', 'assets/images/ghost.png', { frameWidth: 32, frameHeight: 32 });
     this.load.tilemapCSV('map', 'assets/images/grid.csv');
 }
 
@@ -63,54 +64,57 @@ function create() {
     tileset = map.addTilesetImage('tiles', null, 160, 160, 0, 0);
     layer = map.createLayer(0, tileset, 0, 0);
 
-    this.anims.create({
-        key: 'stop',
-        frames: this.anims.generateFrameNumbers(personaje, { frames: [1] }),
-        frameRate: 50,
-        repeat: -1
+    personajes.forEach(x => {
+        this.anims.create({
+            key: `${x}_stop`,
+            frames: this.anims.generateFrameNumbers(x, { frames: [1] }),
+            frameRate: 50,
+            repeat: -1
+        });
+        this.anims.create({
+            key: `${x}_walk_down`,
+            frames: this.anims.generateFrameNumbers(x, { frames: [0, 1, 2] }),
+            frameRate: 8,
+            yoyo: true,
+            repeat: -1
+        });
+        this.anims.create({
+            key: `${x}_walk_right`,
+            frames: this.anims.generateFrameNumbers(x, { frames: [3, 4, 5] }),
+            frameRate: 8,
+            yoyo: true,
+            repeat: -1
+        });
+        this.anims.create({
+            key: `${x}_walk_left`,
+            frames: this.anims.generateFrameNumbers(x, { frames: [6, 7, 8] }),
+            frameRate: 8,
+            yoyo: true,
+            repeat: -1
+        });
+        this.anims.create({
+            key: `${x}_walk_up`,
+            frames: this.anims.generateFrameNumbers(x, { frames: [9, 10, 11] }),
+            frameRate: 8,
+            yoyo: true,
+            repeat: -1
+        });
     });
-    this.anims.create({
-        key: 'walk_down',
-        frames: this.anims.generateFrameNumbers(personaje, { frames: [0, 1, 2] }),
-        frameRate: 8,
-        yoyo: true,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'walk_right',
-        frames: this.anims.generateFrameNumbers(personaje, { frames: [3, 4, 5] }),
-        frameRate: 8,
-        yoyo: true,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'walk_left',
-        frames: this.anims.generateFrameNumbers(personaje, { frames: [6, 7, 8] }),
-        frameRate: 8,
-        yoyo: true,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'walk_up',
-        frames: this.anims.generateFrameNumbers(personaje, { frames: [9, 10, 11] }),
-        frameRate: 8,
-        yoyo: true,
-        repeat: -1
-    });
+
 
     do {
         xpos = 120 + 160 * Math.floor(Math.random() * 5);
         ypos = 80 + 160 * Math.floor(Math.random() * 5);
     } while (layer.getTileAtWorldXY(xpos, ypos, true).index > 0);
 
-    boy = this.physics.add.sprite(xpos, ypos, personaje).setScale(2);
-    boy.anims.play('stop', true);
-    boy.setCollideWorldBounds(true);
+    player = this.physics.add.sprite(xpos, ypos, personaje).setScale(2);
+    player.anims.play(`${personaje}_stop`, true);
+    player.setCollideWorldBounds(true);
 
     do {
         xpos = 80 + 160 * Math.floor(Math.random() * 5);
         ypos = 80 + 160 * Math.floor(Math.random() * 5);
-    } while (layer.getTileAtWorldXY(xpos, ypos, true).index > 0 || (boy.x == xpos + 40 || boy.y == ypos));
+    } while (layer.getTileAtWorldXY(xpos, ypos, true).index > 0 || (player.x == xpos + 40 || player.y == ypos));
 
     tigrillo = this.add.tileSprite(xpos, ypos, 160, 160, 'tigrillo');
 
@@ -121,8 +125,8 @@ function update() {
 }
 
 function cambiarPersonaje(name){
-    console.log(name)
-    // ---------------- NO PUDE :(
+    personaje = name
+    player.anims.play(`${personaje}_stop`, true);
 }
 
 function agregar(walk) {
@@ -161,43 +165,43 @@ function caminar() {
     var interval = setInterval(f, 2000)
 
     function f() {
-        boy.setVelocity(0, 0);
+        player.setVelocity(0, 0);
         const i = instructions.shift()
         switch (i) {
             case 'walk_left':
-                tile = layer.getTileAtWorldXY(boy.x - 160, boy.y, true);
+                tile = layer.getTileAtWorldXY(player.x - 160, player.y, true);
                 if (tile != null && tile.index == 0) {
-                    boy.setVelocity(-80, 0);
+                    player.setVelocity(-80, 0);
                 }
-                boy.anims.play('walk_left', true);
+                player.anims.play(`${personaje}_walk_left`, true);
                 break;
 
             case 'walk_right':
-                tile = layer.getTileAtWorldXY(boy.x + 160, boy.y, true);
+                tile = layer.getTileAtWorldXY(player.x + 160, player.y, true);
                 if (tile != null && tile.index == 0) {
-                    boy.setVelocity(80, 0);
+                    player.setVelocity(80, 0);
                 }
-                boy.anims.play('walk_right', true);
+                player.anims.play(`${personaje}_walk_right`, true);
                 break;
 
             case 'walk_up':
-                tile = layer.getTileAtWorldXY(boy.x, boy.y - 160, true);
+                tile = layer.getTileAtWorldXY(player.x, player.y - 160, true);
                 if (tile != null && tile.index == 0) {
-                    boy.setVelocity(0, -80);
+                    player.setVelocity(0, -80);
                 }
-                boy.anims.play('walk_up', true);
+                player.anims.play(`${personaje}_walk_up`, true);
                 break;
 
             case 'walk_down':
-                tile = layer.getTileAtWorldXY(boy.x, boy.y + 160, true);
+                tile = layer.getTileAtWorldXY(player.x, player.y + 160, true);
                 if (tile != null && tile.index == 0) {
-                    boy.setVelocity(0, 80);
+                    player.setVelocity(0, 80);
                 }
-                boy.anims.play('walk_down', true);
+                player.anims.play(`${personaje}_walk_down`, true);
                 break;
 
             default:
-                boy.anims.play('stop', true);
+                player.anims.play(`${personaje}_stop`, true);
                 clearInterval(interval);
 
                 $('.control-btn').prop('disabled', false)
@@ -205,7 +209,7 @@ function caminar() {
                 $('.btn-delete').prop('disabled', true);
                 $('.btn-arrow').prop('disabled', true);
 
-                boyTile = layer.getTileAtWorldXY(boy.x, boy.y, true)
+                boyTile = layer.getTileAtWorldXY(player.x, player.y, true)
                 tigrilloTile = layer.getTileAtWorldXY(tigrillo.x, tigrillo.y, true)
                 openModal(boyTile == tigrilloTile);
                 start();
@@ -284,9 +288,9 @@ $('.modal').on('hidden.bs.modal', function () {
 
 
 function start() {
-    boy.anims.play('stop', true);
+    player.anims.play(`${personaje}_stop`, true);
 
-    boyTile = layer.getTileAtWorldXY(boy.x, boy.y, true)
+    boyTile = layer.getTileAtWorldXY(player.x, player.y, true)
 
     do {
         xpos = 80 + 160 * Math.floor(Math.random() * 5);
