@@ -124,7 +124,7 @@ function create() {
 function update() {
 }
 
-function cambiarPersonaje(name){
+function cambiarPersonaje(name) {
     personaje = name
     player.anims.play(`${personaje}_stop`, true);
 }
@@ -135,6 +135,8 @@ function agregar(walk) {
     $('.btn-arrow').prop('disabled', false);
     $("#arrow-container").append("<img class='img-fluid' src='assets/images/" + walk + "2.png'>");
     instructions.push(walk)
+    document.getElementById('correcto').style.visibility = 'hidden';
+    document.getElementById('incorrecto').style.visibility = 'hidden';
 }
 
 function borrarUltimaInstruccion() {
@@ -223,8 +225,8 @@ function toggleAudio(audioId) {
     const btn = $(`${audioId}-sound-btn`);
     const isPaused = audio.paused;
 
-    const {sound_class, no_sound_class} = getSoundClases(audioId);
-    
+    const { sound_class, no_sound_class } = getSoundClases(audioId);
+
     pauseAllAudios();
     if (isPaused) {
         audio.play();
@@ -241,7 +243,7 @@ function pauseAudio(audioId) {
     const audio = $(audioId)[0];
     const btn = $(`${audioId}-sound-btn`);
 
-    const {sound_class, no_sound_class} = getSoundClases(audioId);
+    const { sound_class, no_sound_class } = getSoundClases(audioId);
 
     audio.pause();
     btn.removeClass(no_sound_class);
@@ -253,8 +255,8 @@ function playAudio(audioId) {
     const audio = $(audioId)[0];
     const btn = $(`${audioId}-sound-btn`);
 
-    const {sound_class, no_sound_class} = getSoundClases(audioId);
-    
+    const { sound_class, no_sound_class } = getSoundClases(audioId);
+
     audio.play();
     btn.removeClass(sound_class);
     btn.addClass(no_sound_class);
@@ -304,12 +306,12 @@ function start() {
 
 // --------- MODAL --------------
 const btn_types = [
+    "btn-info",
     "btn-success",
+    "btn-secondary",
     "btn-warning",
     "btn-primary",
     "btn-danger",
-    "btn-info",
-    "btn-secondary",
     "btn-light",
     "btn-dark"
 ]
@@ -325,7 +327,7 @@ var preguntas = [{
         "Abierta",
         "Cerrada"
     ]
-},{
+}, {
     "titulo": "La basura en su lugar",
     "info": "La basura que generamos los seres humanos no debe ser arrojada a ríos, lagos, mares, campos o al suelo.  Cuando tengas algo que debas botar a la basura, debes buscar una caneca y depositarlo adecuadamente.",
     "pregunta": "¿Dónde debes botar la basura, en la caneca o en el piso?",
@@ -336,7 +338,7 @@ var preguntas = [{
         "En la caneca",
         "En el piso"
     ]
-},{
+}, {
     "titulo": "Ahorrando energía",
     "info": "La energía eléctrica que utilizamos proviene de los recursos naturales y nos sirve para iluminar las habitacones oscuras. No debemos desperdiciarla, así que cuando salgas de una habitación debes apagar la luz.",
     "pregunta": "¿Cuándo sales de una habitación oscura, la luz debe quedar encendida o apagada?",
@@ -352,28 +354,24 @@ var preguntas = [{
 
 function toHtml({ pregunta, opciones, respuesta, audio, imagen, info }) {
     return `<div class="row justify-content-center align-items-center">
-                <div class="row col-12 d-flex text-justify justify-content-end">
-                    <p>${info}</p>
-                    <button id="pregunta-sound-btn" type="button" class="btn btn-sound"
+                <div class="row col-12 col-lg-5 m-2 d-flex text-justify justify-content-center">
+                    <img class="img-fluid " src="${"assets/images/" + imagen}">
+                    <button id="pregunta-sound-btn" type="button" class="btn btn-sound m-3"
                         onclick="toggleAudio('#pregunta')"></button>
-                        <audio id="pregunta" src=${audio}></audio>
-                    <img class="img-fluid mt-2 " src="${"assets/images/"+imagen}">
+                    <audio id="pregunta" src=${audio}></audio>
                 </div>
-                <div class="row col-12 d-flex text-justify justify-content-center mt-2">
-                    <div class="col-6 d-flex justify-content-center mt-3">
-                        <h5>${pregunta}</h5>
-                    </div>
-                    <div class="col-6 d-flex justify-content-center">
-                    ${opciones.map((x, i) =>
-        `<button 
-                                    class="btn btn-lg ${btn_types[i]} d-flex m-2" 
-                                    data-dismiss="modal" 
-                                    aria-label="Close" 
-                                    onclick="respuesta('${x}', '${respuesta}')"
-                                >
-                                    ${x}
-                                </button>`
-    ).reduce((prev, curr) => prev + curr)}
+                <div class="row col-12 col-lg-6 d-flex text-justify justify-content-center mt-2">
+                    <p>${info}</p>
+                    <p class="font-weight-bold">${pregunta}</p>
+                    <div class="col-12 d-flex justify-content-center">
+                        ${opciones.map((x, i) => `<button 
+                            class="btn btn-lg ${btn_types[i]} d-flex m-2" 
+                            data-dismiss="modal" 
+                            aria-label="Close" 
+                            onclick="respuesta('${x}', '${respuesta}')"
+                        >
+                            ${x}
+                        </button>`).reduce((prev, curr) => prev + curr)}
                     </div>
                 </div>
             </div>`
@@ -397,30 +395,35 @@ function respuesta(respuesta, respuesta_correcta) {
     if (respuesta === respuesta_correcta) {
         score++
         $('#puntuacion').append("<div class='estrella'><img class='img-fluid' src='assets/images/star.png'></div>")
+        document.getElementById('correcto').style.visibility = 'visible'
+    }else{
+        document.getElementById('incorrecto').style.visibility = 'visible'
     }
 
-    if(n==preguntas.length){        
+    if (n == preguntas.length) {
         var aux = score;
-        for (var i=0; i<n; i++){
-            if(aux>0){
+        for (var i = 0; i < n; i++) {
+            if (aux > 0) {
                 $('#score').append("<img class='img-fluid estrella' class='estrella'src='assets/images/star.png'>")
-            }else{
+            } else {
                 $('#score').append("<img class='img-fluid estrella' src='assets/images/gray.png'>")
             }
             aux--;
         }
         $('#modal-end').modal('show')
-       
+
     }
 }
 
 
-function restart(){
+function restart() {
     n = 0
     score = 0
     $("#puntuacion").empty();
     $("#score").empty();
-    $('#turnos').html(preguntas.length - n)
+    $('#turnos').html(preguntas.length - n);
+    document.getElementById('correcto').style.visibility = 'hidden';
+    document.getElementById('incorrecto').style.visibility = 'hidden';
 }
 
 function shuffleQuestions() {

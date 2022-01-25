@@ -12,25 +12,40 @@ body {
   width: 80px;
   background: #ffffff url("../assets/images/walk_up.png") no-repeat center center/cover;
 }
+.btn.btn-up:focus {
+  background: #ffffff url("../assets/images/walk_up1.png") no-repeat center center/cover;
+}
 .btn.btn-left {
   height: 80px;
   width: 80px;
   background: #ffffff url("../assets/images/walk_left.png") no-repeat center center/cover;
+}
+.btn.btn-left:focus {
+  background: #ffffff url("../assets/images/walk_left1.png") no-repeat center center/cover;
 }
 .btn.btn-right {
   height: 80px;
   width: 80px;
   background: #ffffff url("../assets/images/walk_right.png") no-repeat center center/cover;
 }
+.btn.btn-right:focus {
+  background: #ffffff url("../assets/images/walk_right1.png") no-repeat center center/cover;
+}
 .btn.btn-down {
   height: 80px;
   width: 80px;
   background: #ffffff url("../assets/images/walk_down.png") no-repeat center center/cover;
 }
+.btn.btn-down:focus {
+  background: #ffffff url("../assets/images/walk_down1.png") no-repeat center center/cover;
+}
 .btn.btn-go {
   height: 80px;
   width: 80px;
   background: #ffffff url("../assets/images/go.png") no-repeat center center/cover;
+}
+.btn.btn-go:focus {
+  background: #ffffff url("../assets/images/go2.png") no-repeat center center/cover;
 }
 .btn.btn-delete {
   height: 80px;
@@ -75,6 +90,9 @@ body {
 }
 .btn:focus {
   box-shadow: 0;
+}
+.btn.control-btn:focus {
+  box-shadow: none;
 }
 
 .modal {
@@ -125,6 +143,16 @@ body {
 #arrow-container img {
   width: 50px;
   height: 50px;
+}
+
+#correcto {
+  color: green;
+  visibility: hidden;
+}
+
+#incorrecto {
+  color: darkred;
+  visibility: hidden;
 }
 
 @media (min-width: 992px) {

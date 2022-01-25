@@ -25,7 +25,7 @@
 
 <body>
   <div class="container-fluid">
-    <div class="row contenedor-principal">
+    <div class="row contenedor-principal mt-2">
       <div class="col-12 col-lg-3" id='instruction-container'>
         <div class="row d-flex justify-content-center">
           <div class="d-flex justify-content-center col-9 ">
@@ -40,17 +40,17 @@
             <h6>Elige un personaje</h6>
           </div>
           <div class="row d-flex justify-content-center col-12 m-0">
-            <div class="d-flex justify-content-center col-3">
+            <div class="d-flex justify-content-center col-4">
               <button class="btn btn-secondary" onclick="cambiarPersonaje('boy')">
                 <img class="img-fluid" src="assets/images/boy1.png">
               </button>
             </div>
-            <div class="d-flex justify-content-center col-3">
+            <div class="d-flex justify-content-center col-4">
               <button class="btn btn-secondary" onclick="cambiarPersonaje('girl')">
                 <img class="img-fluid" src="assets/images/girl1.png">
               </button>
             </div>
-            <div class="d-flex justify-content-center col-3">
+            <div class="d-flex justify-content-center col-4">
               <button class="btn btn-secondary" onclick="cambiarPersonaje('ghost')">
                 <img class="img-fluid" src="assets/images/ghost1.png">
               </button>
@@ -63,31 +63,37 @@
           </div>
         </div>
       </div>
-      <div class="col-8 col-lg-6 p-0 " id='game-container'>
+      <div class="d-flex justify-content-center col-8 col-lg-6 p-0 " id='game-container'>
         <audio id="game-music" src="assets/audios/music.mp3"></audio>
       </div>
-      <div class="col-4 col-lg-3 p-0 ">
-        <div class="row m-5 d-flex justify-content-center">
-          Turnos restantes: <span id="turnos">0</span>
+      <div class="justify-content-center col-4 col-lg-3 p-0 ">
+        <div class="d-flex justify-content-center">
+          <h4 class="mt-5">Turnos restantes: <span id="turnos">0</span></h4>
         </div>
-        <div class="row m-5 d-flex justify-content-center" id="puntuacion">
+        <div class="d-flex justify-content-center" id="correcto">
+          <h5>¡ CORRECTO !</h5>
         </div>
-        <div class="row m-5 d-flex justify-content-center" id='arrow-container'></div>
+        <div class="d-flex justify-content-center" id="incorrecto">
+          <h5>¡ INCORRECTO !</h5>
+        </div>
+        <div class="d-flex justify-content-center m-4" id="puntuacion">
+        </div>
+        <div class="text-center" id='arrow-container'></div>
         <div class="row d-flex justify-content-center m-0 bottom0">
           <div class="d-flex justify-content-center col-12">
             <button type="button" class="control-btn btn btn-restart" onclick="restart()"></button>
-            <button type="button" class="control-btn btn btn-up" onclick="agregar('walk_up')"></button>
+            <button type="button" class="control-btn control-arrow btn btn-up" onclick="agregar('walk_up')"></button>
             <button id="game-music-sound-btn" type="button" class="control-btn btn btn-nomute"
               onclick="toggleAudio('#game-music')" id="mute"></button>
           </div>
           <div class="d-flex justify-content-center col-12">
-            <button type="button" class="control-btn btn btn-left" onclick="agregar('walk_left')"></button>
+            <button type="button" class="control-btn control-arrow btn btn-left" onclick="agregar('walk_left')"></button>
             <button type="button" class="control-btn btn btn-go" onclick="caminar()" disabled></button>
-            <button type="button" class="control-btn btn btn-right" onclick="agregar('walk_right')"></button>
+            <button type="button" class="control-btn control-arrow btn btn-right" onclick="agregar('walk_right')"></button>
           </div>
           <div class="d-flex justify-content-center col-12">
             <button type="button" class="control-btn btn btn-delete" onclick="borrarInstrucciones()" disabled></button>
-            <button type="button" class="control-btn btn btn-down" onclick="agregar('walk_down')"></button>
+            <button type="button" class="control-btn control-arrow btn btn-down" onclick="agregar('walk_down')"></button>
             <button type="button" class="control-btn btn btn-arrow" onclick="borrarUltimaInstruccion()"
               disabled></button>
           </div>
@@ -147,9 +153,10 @@
                 <img class="img-fluid m-0 tigrillo-tuto" src="assets/images/tigrillo4.png">
               </div>
 
-              <div class="row col-12 col-sm-8 d-flex text-center justify-content-center">
+              <div class="row col-12 col-sm-8 d-flex text-justify justify-content-center">
                 <div class="col-10">
-                  <h5>Utiliza las flechas para moverte y aprende junto a nuestro amigo el tigrillo.</h5>
+                  <h6>Nuestro amigo el tigrillo tiene información y algunos tips que pueden interesarte. Para acercarte utiliza las flechas y luego haz clic en "caminar" para moverte.</h6>
+                  <img class="img-fluid m-0" src="assets/images/tutorial.gif">
                 </div>
                 <div class="col-8 d-flex justify-content-center mt-4">
                   <button class="btn btn-info btn-lg d-flex bg-green" data-dismiss="modal" aria-label="Close"
@@ -179,16 +186,16 @@
               </div>
 
               <div class="row col-12 col-sm-8 d-flex text-center justify-content-center">
-                <div class="col-10">
+                <div class="col-10 m-3">
                   <h5>Tu puntuación: </h5>
                   <div id="score"></div>
                 </div>
-                <div class="col-10">
+                <div class="col-10 m-2">
                   <h5>Puedes seguir jugando y aprender más cosas sobre el medio ambiente y cómo cuidarlo</h5>
                 </div>
                 <div class="col-8 d-flex justify-content-center mt-4">
                   <button class="btn btn-info btn-lg d-flex bg-green" data-dismiss="modal" aria-label="Close"
-                    onclick="restart()">Continuar</button>
+                    onclick="restart()">Volver a jugar</button>
                 </div>
               </div>
             </div>

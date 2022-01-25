@@ -16,30 +16,46 @@ body {
         height: 80px;
         width: 80px;
         background: #ffffff url("../assets/images/walk_up.png") no-repeat center center/cover;
+        &:focus{
+            background: #ffffff url("../assets/images/walk_up1.png") no-repeat center center/cover;
+        }
     }
 
     &.btn-left {
         height: 80px;
         width: 80px;
         background: #ffffff url("../assets/images/walk_left.png") no-repeat center center/cover;
+        &:focus{
+            background: #ffffff url("../assets/images/walk_left1.png") no-repeat center center/cover;
+        }
     }
 
     &.btn-right {
         height: 80px;
         width: 80px;
         background: #ffffff url("../assets/images/walk_right.png") no-repeat center center/cover;
+        &:focus{
+            background: #ffffff url("../assets/images/walk_right1.png") no-repeat center center/cover;
+        }
     }
 
     &.btn-down {
         height: 80px;
         width: 80px;
         background: #ffffff url("../assets/images/walk_down.png") no-repeat center center/cover;
+        &:focus{
+            background: #ffffff url("../assets/images/walk_down1.png") no-repeat center center/cover;
+        }
     }
 
     &.btn-go {
         height: 80px;
         width: 80px;
         background: #ffffff url("../assets/images/go.png") no-repeat center center/cover;
+
+        &:focus{
+            background: #ffffff url("../assets/images/go2.png") no-repeat center center/cover;
+        }
     }
 
     &.btn-delete {
@@ -92,6 +108,12 @@ body {
 
     &:focus {
         box-shadow: 0;
+    }
+
+    &.control-btn{
+        &:focus{
+            box-shadow: none;
+        }
     }
 }
 
@@ -156,6 +178,16 @@ body {
         width: 50px;
         height: 50px;
     }
+}
+
+#correcto{
+    color: green;
+    visibility: hidden;
+}
+
+#incorrecto{
+    color: darkred;
+    visibility: hidden;
 }
 
 @media (min-width: 992px) {
