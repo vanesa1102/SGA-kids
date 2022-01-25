@@ -40,6 +40,7 @@ var map, tileset, layer, tile;
 var instructions = [];
 var xpos, ypos;
 var n = 0; //Para saber el # de pregunta
+var personaje = 'boy'
 
 var game = new Phaser.Game(config);
 
@@ -48,6 +49,7 @@ function preload() {
     this.load.image('tiles', 'assets/images/objects.png');
     this.load.image('tigrillo', 'assets/images/tigrillo.png');
     this.load.spritesheet('boy', 'assets/images/boy.png', { frameWidth: 32, frameHeight: 32 });
+    this.load.spritesheet('girl', 'assets/images/girl.png', { frameWidth: 32, frameHeight: 32 });
     this.load.tilemapCSV('map', 'assets/images/grid.csv');
 }
 
@@ -63,34 +65,34 @@ function create() {
 
     this.anims.create({
         key: 'stop',
-        frames: this.anims.generateFrameNumbers('boy', { frames: [1] }),
+        frames: this.anims.generateFrameNumbers(personaje, { frames: [1] }),
         frameRate: 50,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_down',
-        frames: this.anims.generateFrameNumbers('boy', { frames: [0, 1, 2] }),
+        frames: this.anims.generateFrameNumbers(personaje, { frames: [0, 1, 2] }),
         frameRate: 8,
         yoyo: true,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_right',
-        frames: this.anims.generateFrameNumbers('boy', { frames: [3, 4, 5] }),
+        frames: this.anims.generateFrameNumbers(personaje, { frames: [3, 4, 5] }),
         frameRate: 8,
         yoyo: true,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_left',
-        frames: this.anims.generateFrameNumbers('boy', { frames: [6, 7, 8] }),
+        frames: this.anims.generateFrameNumbers(personaje, { frames: [6, 7, 8] }),
         frameRate: 8,
         yoyo: true,
         repeat: -1
     });
     this.anims.create({
         key: 'walk_up',
-        frames: this.anims.generateFrameNumbers('boy', { frames: [9, 10, 11] }),
+        frames: this.anims.generateFrameNumbers(personaje, { frames: [9, 10, 11] }),
         frameRate: 8,
         yoyo: true,
         repeat: -1
@@ -101,7 +103,7 @@ function create() {
         ypos = 80 + 160 * Math.floor(Math.random() * 5);
     } while (layer.getTileAtWorldXY(xpos, ypos, true).index > 0);
 
-    boy = this.physics.add.sprite(xpos, ypos, 'boy').setScale(2);
+    boy = this.physics.add.sprite(xpos, ypos, personaje).setScale(2);
     boy.anims.play('stop', true);
     boy.setCollideWorldBounds(true);
 
@@ -116,6 +118,11 @@ function create() {
 }
 
 function update() {
+}
+
+function cambiarPersonaje(name){
+    console.log(name)
+    // ---------------- NO PUDE :(
 }
 
 function agregar(walk) {
@@ -303,47 +310,40 @@ const btn_types = [
     "btn-dark"
 ]
 
-var preguntas = [
-    {
-        titulo: "1 + 2",
-        info: "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In hac habitasse platea dictumst. Nam tortor diam, posuere a molestie nec, maximus eu dui. Mauris luctus congue dui ac pellentesque. Fusce bibendum ultrices elit, eget porta lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce pellentesque nibh ut ipsum finibus, sed cursus nibh maximus.",
-        pregunta: "¿Cuanto es 1 + 2?",
-        respuesta: "3",
-        audio: "assets/audios/preguntas/instrucciones.mp3",
-        imagen: "https://picsum.photos/1200/800",
-        opciones: [
-            "1",
-            "4",
-            "3",
-            "Ns/Nr"
-        ]
-    },
-    {
-        titulo: "2 + 2",
-        info: "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In hac habitasse platea dictumst. Nam tortor diam, posuere a molestie nec, maximus eu dui. Mauris luctus congue dui ac pellentesque. Fusce bibendum ultrices elit, eget porta lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce pellentesque nibh ut ipsum finibus, sed cursus nibh maximus.",
-        pregunta: "¿Cuanto es 2 + 2?",
-        respuesta: "4",
-        audio: "assets/audios/preguntas/instrucciones.mp3",
-        imagen: "https://picsum.photos/1200/800",
-        opciones: [
-            "1",
-            "4",
-            "5"
-        ]
-    },
-    {
-        titulo: "Mejor juego",
-        info: "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In hac habitasse platea dictumst. Nam tortor diam, posuere a molestie nec, maximus eu dui. Mauris luctus congue dui ac pellentesque. Fusce bibendum ultrices elit, eget porta lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce pellentesque nibh ut ipsum finibus, sed cursus nibh maximus.",
-        pregunta: "¿Es este el mejor juego?",
-        respuesta: "Si",
-        audio: "assets/audios/preguntas/instrucciones.mp3",
-        imagen: "https://picsum.photos/1200/800",
-        opciones: [
-            "Si",
-            "No",
-            "Tal vez"
-        ]
-    }
+var preguntas = [{
+    "titulo": "El agua es vida",
+    "info": "El agua es un recurso muy importante para la vida de todos los seres vivos; sin ella no pueden vivir los animales, las plantas ni los seres humanos, por eso debemos cuidarla y usarla con responsabilidad.",
+    "pregunta": "¿Mientras te cepillas los dientes debes dejar la llave del lavamanos abierta o cerrada?",
+    "respuesta": "Cerrada",
+    "audio": "assets/audios/preguntas/instrucciones.mp3",
+    "imagen": "El agua es vida.jpg",
+    "opciones": [
+        "Abierta",
+        "Cerrada"
+    ]
+},{
+    "titulo": "La basura en su lugar",
+    "info": "La basura que generamos los seres humanos no debe ser arrojada a ríos, lagos, mares, campos o al suelo.  Cuando tengas algo que debas botar a la basura, debes buscar una caneca y depositarlo adecuadamente.",
+    "pregunta": "¿Dónde debes botar la basura, en la caneca o en el piso?",
+    "respuesta": "En la caneca",
+    "audio": "assets/audios/preguntas/instrucciones.mp3",
+    "imagen": "La basura en su lugar.jpg",
+    "opciones": [
+        "En la caneca",
+        "En el piso"
+    ]
+},{
+    "titulo": "Ahorrando energía",
+    "info": "La energía eléctrica que utilizamos proviene de los recursos naturales y nos sirve para iluminar las habitacones oscuras. No debemos desperdiciarla, así que cuando salgas de una habitación debes apagar la luz.",
+    "pregunta": "¿Cuándo sales de una habitación oscura, la luz debe quedar encendida o apagada?",
+    "respuesta": "Apagada",
+    "audio": "assets/audios/preguntas/instrucciones.mp3",
+    "imagen": "Ahorrando energia.jpg",
+    "opciones": [
+        "Encendida",
+        "Apagada"
+    ]
+}
 ]
 
 function toHtml({ pregunta, opciones, respuesta, audio, imagen, info }) {
@@ -353,7 +353,7 @@ function toHtml({ pregunta, opciones, respuesta, audio, imagen, info }) {
                     <button id="pregunta-sound-btn" type="button" class="btn btn-sound"
                         onclick="toggleAudio('#pregunta')"></button>
                         <audio id="pregunta" src=${audio}></audio>
-                    <img class="img-fluid mt-2 " src="${imagen}">
+                    <img class="img-fluid mt-2 " src="${"assets/images/"+imagen}">
                 </div>
                 <div class="row col-12 d-flex text-justify justify-content-center mt-2">
                     <div class="col-6 d-flex justify-content-center mt-3">
