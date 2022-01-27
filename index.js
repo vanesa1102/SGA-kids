@@ -135,8 +135,7 @@ function agregar(walk) {
     $('.btn-arrow').prop('disabled', false);
     $("#arrow-container").append("<img class='img-fluid' src='assets/images/" + walk + "2.png'>");
     instructions.push(walk)
-    document.getElementById('correcto').style.visibility = 'hidden';
-    document.getElementById('incorrecto').style.visibility = 'hidden';
+    $('#respuesta').html('');
 }
 
 function borrarUltimaInstruccion() {
@@ -394,10 +393,10 @@ function openModal(success) {
 function respuesta(respuesta, respuesta_correcta) {
     if (respuesta === respuesta_correcta) {
         score++
-        $('#puntuacion').append("<div class='estrella'><img class='img-fluid' src='assets/images/star.png'></div>")
-        document.getElementById('correcto').style.visibility = 'visible'
+        $('#puntuacion').append("<div class='estrella'><img class='img-fluid' src='assets/images/star.png'></div>");
+        $('#respuesta').html('<h5 class="correcto"><b>¡ CORRECTO !</b></h5>');
     }else{
-        document.getElementById('incorrecto').style.visibility = 'visible'
+        $('#respuesta').html('<h5 class="incorrecto"><b>¡ INCORRECTO !</b></h5>');
     }
 
     if (n == preguntas.length) {
@@ -419,11 +418,11 @@ function respuesta(respuesta, respuesta_correcta) {
 function restart() {
     n = 0
     score = 0
+    start()
     $("#puntuacion").empty();
     $("#score").empty();
     $('#turnos').html(preguntas.length - n);
-    document.getElementById('correcto').style.visibility = 'hidden';
-    document.getElementById('incorrecto').style.visibility = 'hidden';
+    $('#respuesta').html('');
 }
 
 function shuffleQuestions() {
@@ -431,4 +430,5 @@ function shuffleQuestions() {
         pregunta.opciones.sort(() => Math.random() - 0.5)
     })
 }
+
 shuffleQuestions()

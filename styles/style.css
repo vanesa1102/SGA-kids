@@ -1,10 +1,10 @@
 body {
   background: #ffffff url("../assets/images/fondo.png") no-repeat center center/cover;
-  font-family: monospace;
+  font-family: "Work Sans";
 }
 
 .contenedor-principal {
-  font-family: monospace;
+  font-family: "Work Sans";
 }
 
 .btn.btn-up {
@@ -96,7 +96,7 @@ body {
 }
 
 .modal {
-  font-family: monospace;
+  font-family: "Work Sans";
 }
 .modal .bg-blue {
   background-color: #2674b8;
@@ -145,14 +145,12 @@ body {
   height: 50px;
 }
 
-#correcto {
+.correcto {
   color: green;
-  visibility: hidden;
 }
 
-#incorrecto {
+.incorrecto {
   color: darkred;
-  visibility: hidden;
 }
 
 @media (min-width: 992px) {

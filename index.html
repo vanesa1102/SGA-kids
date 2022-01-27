@@ -11,6 +11,8 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo.png">
 
 
+  <!-- Fuente Work Sans -->
+  <link href='https://fonts.googleapis.com/css?family=Work Sans' rel='stylesheet'>
 
   <!-- Phaser -->
   <script src="//cdn.jsdelivr.net/npm/phaser@3.51.0/dist/phaser.js"></script>
@@ -32,9 +34,9 @@
             <img class="img-fluid p-4 m-0 mr-3 ml-3" src="assets/images/logo3.png">
           </div>
           <div class="d-flex justify-content-center col-12">
-              <button class="btn btn-dark" data-toggle="modal" data-target="#modal-tuto">
-                ¿Cómo jugar?
-              </button>
+            <button class="btn btn-dark" data-toggle="modal" data-target="#modal-tuto">
+              ¿Cómo jugar?
+            </button>
           </div>
           <div class="d-flex justify-content-center col-12 mt-3">
             <h6>Elige un personaje</h6>
@@ -70,11 +72,8 @@
         <div class="d-flex justify-content-center">
           <h4 class="mt-5">Turnos restantes: <span id="turnos">0</span></h4>
         </div>
-        <div class="d-flex justify-content-center" id="correcto">
-          <h5>¡ CORRECTO !</h5>
-        </div>
-        <div class="d-flex justify-content-center" id="incorrecto">
-          <h5>¡ INCORRECTO !</h5>
+        <div class="d-flex justify-content-center" id="respuesta">
+          <h5><b></b></h5>
         </div>
         <div class="d-flex justify-content-center m-4" id="puntuacion">
         </div>
@@ -87,13 +86,16 @@
               onclick="toggleAudio('#game-music')" id="mute"></button>
           </div>
           <div class="d-flex justify-content-center col-12">
-            <button type="button" class="control-btn control-arrow btn btn-left" onclick="agregar('walk_left')"></button>
+            <button type="button" class="control-btn control-arrow btn btn-left"
+              onclick="agregar('walk_left')"></button>
             <button type="button" class="control-btn btn btn-go" onclick="caminar()" disabled></button>
-            <button type="button" class="control-btn control-arrow btn btn-right" onclick="agregar('walk_right')"></button>
+            <button type="button" class="control-btn control-arrow btn btn-right"
+              onclick="agregar('walk_right')"></button>
           </div>
           <div class="d-flex justify-content-center col-12">
             <button type="button" class="control-btn btn btn-delete" onclick="borrarInstrucciones()" disabled></button>
-            <button type="button" class="control-btn control-arrow btn btn-down" onclick="agregar('walk_down')"></button>
+            <button type="button" class="control-btn control-arrow btn btn-down"
+              onclick="agregar('walk_down')"></button>
             <button type="button" class="control-btn btn btn-arrow" onclick="borrarUltimaInstruccion()"
               disabled></button>
           </div>
@@ -119,12 +121,12 @@
           </div>
           <div class="modal-body">
             <div class="row justify-content-center align-items-center">
-              <div class="row col-12 col-sm-4 d-flex text-center justify-content-center">
-                <img class="img-fluid m-0 tigrillo-error" src="assets/images/tigrillo-azul.png">
+              <div class="row col-12 col-sm-5 d-flex text-center justify-content-center">
+                <img class="img-fluid m-0 tigrillo-error" src="assets/images/tigrillo_error.gif">
               </div>
 
-              <div class="row col-12 col-sm-8 d-flex text-center justify-content-center">
-                <div class="col-10">
+              <div class="row m-0 col-12 col-sm-7 d-flex text-center justify-content-center">
+                <div class="col-12">
                   <h5>Acércate para descubrir nuevas cosas.</h5>
                 </div>
                 <div class="col-8 d-flex justify-content-center mt-4">
@@ -147,15 +149,20 @@
           <div class="modal-body">
             <div class="row justify-content-center align-items-center">
               <div class="row col-12 col-sm-4 d-flex text-center justify-content-center">
-                <button id="bienvenida-sound-btn" type="button" class="btn btn-sound"
-                  onclick="toggleAudio('#bienvenida')"></button>
-                <audio id="bienvenida" src="assets/audios/instrucciones.mp3"></audio>
-                <img class="img-fluid m-0 tigrillo-tuto" src="assets/images/tigrillo4.png">
+                <div class="col-12 d-flex text-center justify-content-end">
+                  <button id="bienvenida-sound-btn" type="button" class="btn btn-sound"
+                    onclick="toggleAudio('#bienvenida')"></button>
+                  <audio id="bienvenida" src="assets/audios/instrucciones.mp3"></audio>
+                </div>
+                <div class="col-12 d-flex text-center justify-content-center">
+                  <img class="img-fluid m-0" src="assets/images/tigrillo_tuto.gif">
+                </div>
+                
               </div>
 
               <div class="row col-12 col-sm-8 d-flex text-justify justify-content-center">
                 <div class="col-10">
-                  <h6>Nuestro amigo el tigrillo tiene información y algunos tips que pueden interesarte. Para acercarte utiliza las flechas y luego haz clic en "caminar" para moverte.</h6>
+                  <h6>Para jugar, debes crear la ruta <b>completa</b> con las flechas para llegar a donde nuestro amigo el tigrillo, y luego haz clic en "caminar" para alcanzarlo</h6>
                   <img class="img-fluid m-0" src="assets/images/tutorial.gif">
                 </div>
                 <div class="col-8 d-flex justify-content-center mt-4">

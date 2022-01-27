@@ -4,11 +4,11 @@ $orange: #ef8908;
 
 body {
     background: #ffffff url("../assets/images/fondo.png") no-repeat center center/cover;
-    font-family: monospace;
+    font-family: 'Work Sans';
 }
 
 .contenedor-principal {
-    font-family: monospace;
+    font-family: 'Work Sans';
 }
 
 .btn {
@@ -118,7 +118,7 @@ body {
 }
 
 .modal {
-    font-family: monospace;
+    font-family: 'Work Sans';
     .bg-blue {
         background-color: $blue;
         color: white;
@@ -180,14 +180,12 @@ body {
     }
 }
 
-#correcto{
+.correcto{
     color: green;
-    visibility: hidden;
 }
 
-#incorrecto{
+.incorrecto{
     color: darkred;
-    visibility: hidden;
 }
 
 @media (min-width: 992px) {
