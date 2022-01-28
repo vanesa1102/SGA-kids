@@ -327,9 +327,9 @@ var preguntas = [{
         "Cerrada"
     ]
 }, {
-    "titulo": "La basura en su lugar",
-    "info": "La basura que generamos los seres humanos no debe ser arrojada a ríos, lagos, mares, campos o al suelo.  Cuando tengas algo que debas botar a la basura, debes buscar una caneca y depositarlo adecuadamente.",
-    "pregunta": "¿Dónde debes botar la basura, en la caneca o en el piso?",
+    "titulo": "Los residuos en su lugar",
+    "info": "Los residuos que generamos los seres humanos no deben ser arrojados a los ríos, lagos, mares, campos o al suelo. Cuando tengas algo que debas disponer, debes buscar la caneca adecuada y depositarlo.",
+    "pregunta": "¿Dónde debes botar los residuos, en la caneca o en el piso?",
     "respuesta": "En la caneca",
     "audio": "assets/audios/preguntas/instrucciones.mp3",
     "imagen": "image.png",
@@ -338,9 +338,9 @@ var preguntas = [{
         "En el piso"
     ]
 }, {
-    "titulo": "Ahorrando energía",
-    "info": "La energía eléctrica que utilizamos proviene de los recursos naturales y nos sirve para iluminar las habitacones oscuras. No debemos desperdiciarla, así que cuando salgas de una habitación debes apagar la luz.",
-    "pregunta": "¿Cuándo sales de una habitación oscura, la luz debe quedar encendida o apagada?",
+    "titulo": "Ahorremos energía",
+    "info": "La energía eléctrica que utilizamos proviene, en su mayor parte, de recursos naturales y nos sirve para iluminar las habitaciones oscuras. No debemos desperdiciarla. Así que cuando salgas de una habitación debes apagar la luz.",
+    "pregunta": "¿Cuándo sales de una habitación, la luz debe quedar encendida o apagada?",
     "respuesta": "Apagada",
     "audio": "assets/audios/preguntas/instrucciones.mp3",
     "imagen": "luz.png",
