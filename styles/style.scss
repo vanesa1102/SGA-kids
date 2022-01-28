@@ -185,3 +185,10 @@ body {
         min-height: 100vh;
     }
 }
+
+@media (min-width: 1920px) {
+    .control-btn {
+        min-height: 130px;
+        min-width: 130px;
+    }
+}
