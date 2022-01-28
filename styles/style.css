@@ -8,88 +8,72 @@ body {
 }
 
 .btn.btn-up {
-  height: 80px;
-  width: 80px;
   background: #ffffff url("../assets/images/walk_up.png") no-repeat center center/cover;
 }
 .btn.btn-up:focus {
   background: #ffffff url("../assets/images/walk_up1.png") no-repeat center center/cover;
 }
 .btn.btn-left {
-  height: 80px;
-  width: 80px;
   background: #ffffff url("../assets/images/walk_left.png") no-repeat center center/cover;
 }
 .btn.btn-left:focus {
   background: #ffffff url("../assets/images/walk_left1.png") no-repeat center center/cover;
 }
 .btn.btn-right {
-  height: 80px;
-  width: 80px;
   background: #ffffff url("../assets/images/walk_right.png") no-repeat center center/cover;
 }
 .btn.btn-right:focus {
   background: #ffffff url("../assets/images/walk_right1.png") no-repeat center center/cover;
 }
 .btn.btn-down {
-  height: 80px;
-  width: 80px;
   background: #ffffff url("../assets/images/walk_down.png") no-repeat center center/cover;
 }
 .btn.btn-down:focus {
   background: #ffffff url("../assets/images/walk_down1.png") no-repeat center center/cover;
 }
 .btn.btn-go {
-  height: 80px;
-  width: 80px;
   background: #ffffff url("../assets/images/go.png") no-repeat center center/cover;
 }
 .btn.btn-go:focus {
   background: #ffffff url("../assets/images/go2.png") no-repeat center center/cover;
 }
 .btn.btn-delete {
-  height: 80px;
-  width: 80px;
   background: #ffffff url("../assets/images/trash.png") no-repeat center center/cover;
 }
 .btn.btn-restart {
-  height: 80px;
-  width: 80px;
   background: #ffffff url("../assets/images/restart.png") no-repeat center center/cover;
 }
 .btn.btn-mute {
-  height: 80px;
-  width: 80px;
   background: #ffffff url("../assets/images/mute.png") no-repeat center center/cover;
 }
 .btn.btn-nomute {
-  height: 80px;
-  width: 80px;
   background: #ffffff url("../assets/images/nomute.png") no-repeat center center/cover;
 }
 .btn.btn-arrow {
-  height: 80px;
-  width: 80px;
   background: #ffffff url("../assets/images/arrow.png") no-repeat center center/cover;
 }
 .btn.btn-sound {
-  height: 60px;
-  width: 60px;
   background: #ffffff url("../assets/images/sound.png") no-repeat center center/cover;
   animation-name: bounceIn;
   animation-duration: 4s;
   animation-iteration-count: infinite;
 }
 .btn.btn-no-sound {
-  height: 60px;
-  width: 60px;
   background: #ffffff url("../assets/images/no-sound.png") no-repeat center center/cover;
   animation-name: bounceIn;
   animation-duration: 4s;
   animation-iteration-count: infinite;
 }
+.btn.audio-modal {
+  height: 70px;
+  width: 70px;
+}
 .btn:focus {
   box-shadow: 0;
+}
+.btn.control-btn {
+  height: 80px;
+  width: 80px;
 }
 .btn.control-btn:focus {
   box-shadow: none;
@@ -153,10 +137,20 @@ body {
   color: darkred;
 }
 
+#game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (min-width: 992px) {
   .bottom0 {
     bottom: 0;
     position: absolute !important;
+  }
+
+  .contenedor-principal {
+    min-height: 100vh;
   }
 }
 

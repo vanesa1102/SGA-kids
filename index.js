@@ -321,7 +321,7 @@ var preguntas = [{
     "pregunta": "¿Mientras te cepillas los dientes debes dejar la llave del lavamanos abierta o cerrada?",
     "respuesta": "Cerrada",
     "audio": "assets/audios/preguntas/instrucciones.mp3",
-    "imagen": "El agua es vida.jpg",
+    "imagen": "water.png",
     "opciones": [
         "Abierta",
         "Cerrada"
@@ -332,7 +332,7 @@ var preguntas = [{
     "pregunta": "¿Dónde debes botar la basura, en la caneca o en el piso?",
     "respuesta": "En la caneca",
     "audio": "assets/audios/preguntas/instrucciones.mp3",
-    "imagen": "La basura en su lugar.jpg",
+    "imagen": "image.png",
     "opciones": [
         "En la caneca",
         "En el piso"
@@ -343,7 +343,7 @@ var preguntas = [{
     "pregunta": "¿Cuándo sales de una habitación oscura, la luz debe quedar encendida o apagada?",
     "respuesta": "Apagada",
     "audio": "assets/audios/preguntas/instrucciones.mp3",
-    "imagen": "Ahorrando energia.jpg",
+    "imagen": "luz.png",
     "opciones": [
         "Encendida",
         "Apagada"
@@ -354,10 +354,14 @@ var preguntas = [{
 function toHtml({ pregunta, opciones, respuesta, audio, imagen, info }) {
     return `<div class="row justify-content-center align-items-center">
                 <div class="row col-12 col-lg-5 m-2 d-flex text-justify justify-content-center">
-                    <img class="img-fluid " src="${"assets/images/" + imagen}">
-                    <button id="pregunta-sound-btn" type="button" class="btn btn-sound m-3"
-                        onclick="toggleAudio('#pregunta')"></button>
-                    <audio id="pregunta" src=${audio}></audio>
+                    <div class="col-12 d-flex text-justify justify-content-center">
+                        <img class="img-fluid " src="${"assets/images/" + imagen}">
+                    </div>
+                    <div class="col-12 d-flex text-justify justify-content-center">
+                        <button id="pregunta-sound-btn" type="button" class="btn btn-sound audio-modal m-3"
+                            onclick="toggleAudio('#pregunta')"></button>
+                        <audio id="pregunta" src=${audio}></audio>
+                    </div>
                 </div>
                 <div class="row col-12 col-lg-6 d-flex text-justify justify-content-center mt-2">
                     <p>${info}</p>

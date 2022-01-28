@@ -59,9 +59,9 @@
             </div>
           </div>
         </div>
-        <div class="d-flex justify-content-center col-12 bottom0">
+        <div class="row d-flex justify-content-center col-12 bottom0 mt-3">
           <div class="m-0">
-            <img class="img-fluid m-0" src="assets/images/tigrillo3.png">
+            <img class="img-fluid m-0" src="assets/images/tigrillo_animado.gif">
           </div>
         </div>
       </div>
@@ -150,19 +150,20 @@
             <div class="row justify-content-center align-items-center">
               <div class="row col-12 col-sm-4 d-flex text-center justify-content-center">
                 <div class="col-12 d-flex text-center justify-content-end">
-                  <button id="bienvenida-sound-btn" type="button" class="btn btn-sound"
+                  <button id="bienvenida-sound-btn" type="button" class="btn btn-sound audio-modal"
                     onclick="toggleAudio('#bienvenida')"></button>
                   <audio id="bienvenida" src="assets/audios/instrucciones.mp3"></audio>
                 </div>
                 <div class="col-12 d-flex text-center justify-content-center">
                   <img class="img-fluid m-0" src="assets/images/tigrillo_tuto.gif">
                 </div>
-                
+
               </div>
 
               <div class="row col-12 col-sm-8 d-flex text-justify justify-content-center">
                 <div class="col-10">
-                  <h6>Para jugar, debes crear la ruta <b>completa</b> con las flechas para llegar a donde nuestro amigo el tigrillo, y luego haz clic en "caminar" para alcanzarlo</h6>
+                  <h6>Para jugar, debes crear la ruta <b>completa</b> con las flechas para llegar a donde nuestro amigo
+                    el tigrillo, y luego haz clic en "caminar" para alcanzarlo</h6>
                   <img class="img-fluid m-0" src="assets/images/tutorial.gif">
                 </div>
                 <div class="col-8 d-flex justify-content-center mt-4">
@@ -186,10 +187,14 @@
           <div class="modal-body">
             <div class="row justify-content-center align-items-center">
               <div class="row col-12 col-sm-4 d-flex text-center justify-content-center">
-                <button id="gameover-sound-btn" type="button" class="btn btn-sound"
-                  onclick="toggleAudio('#gameover')"></button>
-                <audio id="gameover" src="assets/audios/instrucciones.mp3"></audio>
-                <img class="img-fluid m-0 tigrillo-tuto" src="assets/images/tigrillo4.png">
+                <div class="col-12">
+                  <button id="gameover-sound-btn" type="button" class="btn btn-sound audio-modal"
+                    onclick="toggleAudio('#gameover')"></button>
+                  <audio id="gameover" src="assets/audios/instrucciones.mp3"></audio>
+                </div>
+                <div class="col-12">
+                  <img class="img-fluid m-0 tigrillo-tuto" src="assets/images/tigrillo4.png">
+                </div>
               </div>
 
               <div class="row col-12 col-sm-8 d-flex text-center justify-content-center">
