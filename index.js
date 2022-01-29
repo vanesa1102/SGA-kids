@@ -56,6 +56,9 @@ function preload() {
 
 function create() {
 
+    var music = document.getElementById("game-music");
+    music.volume = 0.1;
+
     playAudio('#game-music');
 
     //  A simple background for our game
@@ -250,7 +253,9 @@ function pauseAudio(audioId) {
 }
 
 function playAudio(audioId) {
+    
     pauseAllAudios();
+    
     const audio = $(audioId)[0];
     const btn = $(`${audioId}-sound-btn`);
 
@@ -263,8 +268,11 @@ function playAudio(audioId) {
 
 function pauseAllAudios() {
     $('audio').each(function () {
-        this.pause(); // Stop playing
-        this.currentTime = 0; // Reset time
+        if (this.id != 'wrong' && this.id != 'right' && this.id != 'end') {
+            this.pause(); // Stop playing
+            if(this.id != 'game-music')
+            this.currentTime = 0; // Reset time
+        }
     });
 }
 
@@ -276,9 +284,11 @@ function getSoundClases(audioId) {
 }
 
 $('.modal').on('shown.bs.modal', function () {
-    const audio = $("#game-music")[0];
-    musicWasPaused = audio.paused;
-    pauseAudio('#game-music');
+    if(this.id != 'modal-end'){
+        const audio = $("#game-music")[0];
+        musicWasPaused = audio.paused;
+        pauseAudio('#game-music');
+    }
 });
 
 $('.modal').on('hidden.bs.modal', function () {
@@ -320,7 +330,7 @@ var preguntas = [{
     "info": "El agua es un recurso muy importante para la vida de todos los seres vivos; sin ella no pueden vivir los animales, las plantas ni los seres humanos, por eso debemos cuidarla y usarla con responsabilidad.",
     "pregunta": "¿Mientras te cepillas los dientes debes dejar la llave del lavamanos abierta o cerrada?",
     "respuesta": "Cerrada",
-    "audio": "assets/audios/preguntas/instrucciones.mp3",
+    "audio": "assets/audios/preguntas/agua.mp3",
     "imagen": "water.png",
     "opciones": [
         "Abierta",
@@ -331,7 +341,7 @@ var preguntas = [{
     "info": "Los residuos que generamos los seres humanos no deben ser arrojados a los ríos, lagos, mares, campos o al suelo. Cuando tengas algo que debas disponer, debes buscar la caneca adecuada y depositarlo.",
     "pregunta": "¿Dónde debes botar los residuos, en la caneca o en el piso?",
     "respuesta": "En la caneca",
-    "audio": "assets/audios/preguntas/instrucciones.mp3",
+    "audio": "assets/audios/preguntas/residuos.mp3",
     "imagen": "image.png",
     "opciones": [
         "En la caneca",
@@ -342,7 +352,7 @@ var preguntas = [{
     "info": "La energía eléctrica que utilizamos proviene, en su mayor parte, de recursos naturales y nos sirve para iluminar las habitaciones oscuras. No debemos desperdiciarla. Así que cuando salgas de una habitación debes apagar la luz.",
     "pregunta": "¿Cuándo sales de una habitación, la luz debe quedar encendida o apagada?",
     "respuesta": "Apagada",
-    "audio": "assets/audios/preguntas/instrucciones.mp3",
+    "audio": "assets/audios/preguntas/energia.mp3",
     "imagen": "luz.png",
     "opciones": [
         "Encendida",
@@ -398,9 +408,12 @@ function respuesta(respuesta, respuesta_correcta) {
     if (respuesta === respuesta_correcta) {
         score++
         $('#puntuacion').append("<div class='estrella'><img class='img-fluid' src='assets/images/star.png'></div>");
-        $('#respuesta').html('<h5 class="correcto"><b>¡ CORRECTO !</b></h5>');
-    }else{
-        $('#respuesta').html('<h5 class="incorrecto"><b>¡ INCORRECTO !</b></h5>');
+        $('#respuesta').html('<h5 class="correcto"><b>¡ Correcto !</b></h5>');
+        playAudio('#right')
+    } else {
+        playAudio('#wrong')
+        $('#respuesta').html('<h5 class="incorrecto"><b>¡ Vuelve a intentarlo !</b></h5>');
+
     }
 
     if (n == preguntas.length) {
@@ -414,6 +427,7 @@ function respuesta(respuesta, respuesta_correcta) {
             aux--;
         }
         $('#modal-end').modal('show')
+        playAudio("#end")
 
     }
 }
