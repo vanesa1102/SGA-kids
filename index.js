@@ -288,6 +288,9 @@ $('.modal').on('shown.bs.modal', function () {
         const audio = $("#game-music")[0];
         musicWasPaused = audio.paused;
         pauseAudio('#game-music');
+        if(this.id == 'modal-pregunta'){
+            playAudio('#pregunta'+n)
+        }
     }
 });
 
@@ -368,9 +371,9 @@ function toHtml({ pregunta, opciones, respuesta, audio, imagen, info }) {
                         <img class="img-fluid " src="${"assets/images/" + imagen}">
                     </div>
                     <div class="col-12 d-flex text-justify justify-content-center">
-                        <button id="pregunta-sound-btn" type="button" class="btn btn-sound audio-modal m-3"
-                            onclick="toggleAudio('#pregunta')"></button>
-                        <audio id="pregunta" src=${audio}></audio>
+                        <button id="${"pregunta" + n + "-sound-btn"}" type="button" class="btn btn-sound audio-modal m-3"
+                            onclick="toggleAudio('${"#pregunta" + n}')"></button>
+                        <audio id="${"pregunta" + n}" src=${audio}></audio>
                     </div>
                 </div>
                 <div class="row col-12 col-lg-6 d-flex text-justify justify-content-center mt-2">
