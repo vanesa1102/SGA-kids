@@ -175,6 +175,13 @@ body {
     align-items: center;
 }
 
+#credits-container{
+    background-color: #E3F6D3;
+    padding: 5px;
+    font-size: .9rem;
+//    background: white url("../assets/images/tpi.png") no-repeat bottom center/contain;
+}
+
 @media (min-width: 992px) {
     .bottom0 {
         bottom: 0;
